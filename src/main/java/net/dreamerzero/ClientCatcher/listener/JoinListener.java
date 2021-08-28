@@ -11,9 +11,10 @@ import org.slf4j.Logger;
 import net.dreamerzero.ClientCatcher.Catcher;
 
 public class JoinListener {
-    private Logger logger;
-    private ProxyServer server;
-    private Catcher plugin;
+    private final Logger logger;
+    private final ProxyServer server;
+    private final Catcher plugin;
+
     public JoinListener(ProxyServer server, Logger logger, Catcher plugin){
         this.logger = logger;
         this.server = server;
@@ -22,9 +23,11 @@ public class JoinListener {
 	
     @Subscribe(order = PostOrder.LATE)
     public void onPlayerJoin(PostLoginEvent event){
-        var player = event.getPlayer();
-        var playerName = player.getUsername();
+        final var player = event.getPlayer();
+        final var playerName = player.getUsername();
 
+        // The client sends the client brand seconds after logging in, 
+        // so you should wait a few seconds before trying to get it.
         server.getScheduler()
             .buildTask(plugin, () -> {
                 var client = player.getClientBrand();

@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 
 public class Catcher {
     private final ProxyServer server;
-    private Logger logger;
+    private final Logger logger;
 
     @Inject
     public Catcher(ProxyServer server, Logger logger) {
@@ -21,7 +21,11 @@ public class Catcher {
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
+        // :)
+        logger.info("ClientCatcher has started, have a nice day.");
+        // Register the PostLogin listener
         server.getEventManager().register(this, new JoinListener(server, logger, this));
+        // Register the "/client" command
         server.getCommandManager().register("client", new ClientCommand(server));
     }
 }
