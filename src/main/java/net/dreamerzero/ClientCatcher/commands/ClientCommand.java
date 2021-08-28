@@ -22,7 +22,14 @@ public class ClientCommand implements SimpleCommand {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
 		Optional<Player> player;
-		
+        
+		if (!source.hasPermission("clientcatcher.command")){
+            source.sendMessage(
+                Component.text("You do not have permission to execute this command.", 
+                NamedTextColor.DARK_RED));
+            return;
+        }
+
         if (args.length == 0){
             source.sendMessage(Component.text("Client", NamedTextColor.RED)
                 .append(Component.text("Catcher", NamedTextColor.WHITE))
@@ -36,7 +43,9 @@ public class ClientCommand implements SimpleCommand {
             var playerName = player.get().getUsername();
 
 			if(!player.isPresent()){
-                source.sendMessage(Component.text(args[0] + "is not a player or is not online", NamedTextColor.RED));
+                source.sendMessage(
+                    Component.text(args[0] + "is not a player or is not online", 
+                    NamedTextColor.RED));
                 return;
             }
 			
