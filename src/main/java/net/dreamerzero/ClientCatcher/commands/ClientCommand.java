@@ -43,8 +43,9 @@ public class ClientCommand implements SimpleCommand {
 
 			if(!player.isPresent()){
                 source.sendMessage(
-                    Component.text(args[0] + "is not a player or is not online", 
-                    NamedTextColor.RED));
+                    Component.text(args[0], NamedTextColor.GOLD).append(Component.space())
+                        .append(Component.text("is not a player or is not online", 
+                            NamedTextColor.RED)));
                 return;
             }
 			
