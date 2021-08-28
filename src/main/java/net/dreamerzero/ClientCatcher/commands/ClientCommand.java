@@ -22,7 +22,7 @@ public class ClientCommand implements SimpleCommand {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
 		Optional<Player> player;
-        
+
 		if (!source.hasPermission("clientcatcher.command")){
             source.sendMessage(
                 Component.text("You do not have permission to execute this command.", 
@@ -40,7 +40,6 @@ public class ClientCommand implements SimpleCommand {
             return;
         } else if(args.length >= 1){
             player = server.getPlayer(args[0]);
-            var playerName = player.get().getUsername();
 
 			if(!player.isPresent()){
                 source.sendMessage(
@@ -49,6 +48,7 @@ public class ClientCommand implements SimpleCommand {
                 return;
             }
 			
+            var playerName = player.get().getUsername();
 			var clientbrand = player.get().getClientBrand();
             source.sendMessage(Component.text("Client of", NamedTextColor.RED)
                 .append(Component.space())
