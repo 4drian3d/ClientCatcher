@@ -22,8 +22,6 @@ public class ClientCommand implements SimpleCommand {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
 		Optional<Player> player;
-
-        source.sendMessage(Component.text("Arguments: " + invocation.arguments().length).color(NamedTextColor.AQUA));
 		
         if (args.length == 0){
             source.sendMessage(Component.text("Client", NamedTextColor.RED)
@@ -33,8 +31,9 @@ public class ClientCommand implements SimpleCommand {
                 .append(Component.space())
                 .append(Component.text("/client [user]")));
             return;
-        } else if(args.length == 1){
+        } else if(args.length >= 1){
             player = server.getPlayer(args[0]);
+            var playerName = player.get().getUsername();
 
 			if(!player.isPresent()){
                 source.sendMessage(Component.text(args[0] + "is not a player or is not online", NamedTextColor.RED));
@@ -42,10 +41,9 @@ public class ClientCommand implements SimpleCommand {
             }
 			
 			var clientbrand = player.get().getClientBrand();
-                
             source.sendMessage(Component.text("Client of", NamedTextColor.RED)
                 .append(Component.space())
-                .append(Component.text(args[0], NamedTextColor.AQUA))
+                .append(Component.text(playerName, NamedTextColor.AQUA))
                 .append(Component.text(":", NamedTextColor.GRAY))
                 .append(Component.space())
                 .append(Component.text(clientbrand, NamedTextColor.GOLD)));

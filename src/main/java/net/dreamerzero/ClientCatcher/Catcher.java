@@ -17,14 +17,14 @@ import org.slf4j.Logger;
 	authors = {"4drian3d"})
 public class Catcher {
     private final ProxyServer server;
-	private Logger logger;
+    private Logger logger;
 
     @Inject
     public Catcher(ProxyServer server, Logger logger) {
         this.server = server;
-		this.logger = logger;
-
+        this.logger = logger;
     }
+    
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
         server.getEventManager().register(this, new JoinListener(server, logger, this));
