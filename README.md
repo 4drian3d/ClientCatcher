@@ -21,7 +21,7 @@ However, the plugin can detect several clients such as Forge, Fabric, LiteLoader
             <td><code>/client</code></td>
             <td>[User]</td>
             <td>clientcatcher.command</td>
-            <td>Main plugin command. Shows you the client the player is connected to..</td>
+            <td>Main plugin command. Shows you the client the player is connected to.</td>
         </tr>
     </tbody>
 </table>
