@@ -31,9 +31,13 @@ public class JoinListener {
         server.getScheduler()
             .buildTask(plugin, () -> {
                 var client = player.getClientBrand();
+                if(client == null) {
+                    logger.info("The client of " + playerName + " has returned a null value");
+                    return;
+                }
                 logger.info(playerName + " has joined with client: " + client);
             })
-            .delay(6L, TimeUnit.SECONDS)
+            .delay(7L, TimeUnit.SECONDS)
             .schedule();
     }
 }
