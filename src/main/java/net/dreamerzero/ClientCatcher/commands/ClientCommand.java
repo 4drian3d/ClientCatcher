@@ -18,9 +18,9 @@ import net.kyori.adventure.text.format.NamedTextColor;
 public class ClientCommand implements SimpleCommand {
     private final ProxyServer server;
 	
-	public ClientCommand(ProxyServer server){
-		this.server = server;
-	}
+	public ClientCommand(ProxyServer server) {
+        this.server = server;
+    }
 
     static final TextComponent helpMessage = text()
         .append(text("Client")
@@ -36,17 +36,18 @@ public class ClientCommand implements SimpleCommand {
     public void execute(final Invocation invocation) {
         final CommandSource source = invocation.source();
         final String[] args = invocation.arguments();
+
         // The specified argument may or may not be a player, 
         // if it is not a player, the value will be null.
-		Optional<Player> player;
+        Optional<Player> player;
 
-        if (args.length == 0){
+        if (args.length == 0) {
             source.sendMessage(helpMessage);
             return;
-        } else if(args.length >= 1){
+        } else if(args.length >= 1) {
             player = server.getPlayer(args[0]);
 
-			if(!player.isPresent()){
+			if (!player.isPresent()) {
                 source.sendMessage(
                     text(args[0])
                     .color(NamedTextColor.RED)
@@ -56,7 +57,7 @@ public class ClientCommand implements SimpleCommand {
             }
 			
             final var playerName = player.get().getUsername();
-			final var clientbrand = player.get().getClientBrand();
+            final var clientbrand = player.get().getClientBrand();
             source.sendMessage(
                 text("Client of")
                     .color(NamedTextColor.RED)
@@ -72,7 +73,7 @@ public class ClientCommand implements SimpleCommand {
     }
 
     @Override
-    public List<String> suggest(final Invocation invocation){
+    public List<String> suggest(final Invocation invocation) {
         List<String> players = new ArrayList<>();
         var allplayers = server.getAllPlayers();
         for (Player player : allplayers) {
@@ -83,7 +84,7 @@ public class ClientCommand implements SimpleCommand {
     }
 
     @Override
-    public boolean hasPermission(final Invocation invocation){
+    public boolean hasPermission(final Invocation invocation) {
         return invocation.source().hasPermission("clientcatcher.command");
     }
 }

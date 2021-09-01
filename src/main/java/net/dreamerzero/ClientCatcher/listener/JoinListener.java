@@ -15,14 +15,14 @@ public class JoinListener {
     private final ProxyServer server;
     private final Catcher plugin;
 
-    public JoinListener(ProxyServer server, Logger logger, Catcher plugin){
+    public JoinListener(ProxyServer server, Logger logger, Catcher plugin) {
         this.logger = logger;
         this.server = server;
         this.plugin = plugin;
     }
 	
     @Subscribe(order = PostOrder.LATE)
-    public void onPlayerJoin(final PostLoginEvent event){
+    public void onPlayerJoin(final PostLoginEvent event) {
         final var player = event.getPlayer();
         final var playerName = player.getUsername();
 
@@ -31,7 +31,7 @@ public class JoinListener {
         server.getScheduler()
             .buildTask(plugin, () -> {
                 var client = player.getClientBrand();
-                if(client == null) {
+                if (client == null) {
                     logger.info("The client of " + playerName + " has returned a null value");
                     return;
                 }
