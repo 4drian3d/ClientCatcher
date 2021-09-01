@@ -6,7 +6,7 @@
 
     <groupId>net.dreamerzero.ClientCatcher</groupId>
     <artifactId>ClientCatcher</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -25,7 +25,7 @@
         <dependency>
 			<groupId>com.velocitypowered</groupId>
 			<artifactId>velocity-api</artifactId>
-			<version>3.0.0</version>
+			<version>3.0.1</version>
 			<scope>provided</scope>
 		</dependency>
     </dependencies>

@@ -14,7 +14,7 @@ public class Catcher {
     private final Logger logger;
 
     @Inject
-    public Catcher(ProxyServer server, Logger logger) {
+    public Catcher(final ProxyServer server, final Logger logger) {
         this.server = server;
         this.logger = logger;
     }

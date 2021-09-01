@@ -22,7 +22,7 @@ public class JoinListener {
     }
 	
     @Subscribe(order = PostOrder.LATE)
-    public void onPlayerJoin(PostLoginEvent event){
+    public void onPlayerJoin(final PostLoginEvent event){
         final var player = event.getPlayer();
         final var playerName = player.getUsername();
 
