@@ -15,7 +15,7 @@ public class JoinListener {
     private final ProxyServer server;
     private final Catcher plugin;
 
-    public JoinListener(ProxyServer server, Logger logger, Catcher plugin) {
+    public JoinListener(final ProxyServer server, final Logger logger, final Catcher plugin) {
         this.logger = logger;
         this.server = server;
         this.plugin = plugin;
