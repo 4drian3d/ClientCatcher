@@ -1,5 +1,7 @@
 package net.dreamerzero.ClientCatcher.commands;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import com.velocitypowered.api.command.CommandSource;
@@ -9,6 +11,7 @@ import com.velocitypowered.api.proxy.ProxyServer;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.Component.space;
+
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 
@@ -36,13 +39,6 @@ public class ClientCommand implements SimpleCommand {
         // The specified argument may or may not be a player, 
         // if it is not a player, the value will be null.
 		Optional<Player> player;
-
-		if (!source.hasPermission("clientcatcher.command")){
-            source.sendMessage(
-                text("You do not have permission to execute this command.")
-                    .color(NamedTextColor.RED));
-            return;
-        }
 
         if (args.length == 0){
             source.sendMessage(helpMessage);
@@ -73,5 +69,21 @@ public class ClientCommand implements SimpleCommand {
                 .append(text(clientbrand)
                     .color(NamedTextColor.GOLD)));
         }
+    }
+
+    @Override
+    public List<String> suggest(final Invocation invocation){
+        List<String> players = new ArrayList<>();
+        var allplayers = server.getAllPlayers();
+        for (Player player : allplayers) {
+            var playername = player.getUsername();
+            players.add(playername);
+        }
+        return players;
+    }
+
+    @Override
+    public boolean hasPermission(final Invocation invocation){
+        return invocation.source().hasPermission("clientcatcher.command");
     }
 }
