@@ -1,4 +1,4 @@
-package net.dreamerzero.ClientCatcher.commands;
+package net.dreamerzero.clientcatcher.commands;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +9,10 @@ import com.velocitypowered.api.command.SimpleCommand;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.Component.space;
-
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.format.NamedTextColor;
+import net.dreamerzero.clientcatcher.Catcher;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.Template;
 
 public class ClientCommand implements SimpleCommand {
     private final ProxyServer server;
@@ -21,16 +20,6 @@ public class ClientCommand implements SimpleCommand {
 	public ClientCommand(ProxyServer server) {
         this.server = server;
     }
-
-    static final TextComponent helpMessage = text()
-        .append(text("Client")
-            .color(NamedTextColor.RED))
-        .append(text("Catcher")
-            .color(NamedTextColor.WHITE))
-        .append(text(" | ", NamedTextColor.GRAY))
-        .append(text("Use:", NamedTextColor.RED))
-        .append(space())
-        .append(text("/client [user]")).build();
 
     @Override
     public void execute(final Invocation invocation) {
@@ -42,33 +31,37 @@ public class ClientCommand implements SimpleCommand {
         Optional<Player> player;
 
         if (args.length == 0) {
-            source.sendMessage(helpMessage);
+            source.sendMessage(
+                MiniMessage.get().parse(
+                    Catcher.getConfig().getOrSetDefault(
+                        "messages.usage", 
+                        "<gradient:red:white>ClientCatcher <gray>| <red>Usage: <white>/client <aqua>[user]")));
             return;
         } else if(args.length >= 1) {
             player = server.getPlayer(args[0]);
 
 			if (!player.isPresent()) {
                 source.sendMessage(
-                    text(args[0])
-                    .color(NamedTextColor.RED)
-                    .append(space())
-                        .append(text("is not a player or is not online").color(NamedTextColor.RED)));
+                    MiniMessage.get().parse(
+                        Catcher.getConfig().getOrSetDefault(
+                            "messages.unknown-player", 
+                            "<red><name> is not a player or is not online"), 
+                        Template.of("name", args[0]), Template.of("newline", Component.newline())));
                 return;
             }
 			
             final var playerName = player.get().getUsername();
             final var clientbrand = player.get().getClientBrand();
+            List<Template> templates = List.of(
+                Template.of("player", playerName), 
+                Template.of("client", clientbrand), 
+                Template.of("newline", Component.newline()));
             source.sendMessage(
-                text("Client of")
-                    .color(NamedTextColor.RED)
-                .append(space())
-                .append(text(playerName)
-                    .color(NamedTextColor.AQUA))
-                .append(text(":")
-                    .color(NamedTextColor.GRAY))
-                .append(space())
-                .append(text(clientbrand)
-                    .color(NamedTextColor.GOLD)));
+                MiniMessage.get().parse(
+                    Catcher.getConfig().getOrSetDefault(
+                        "messages.client-command", 
+                        "<red>Client of</red> <aqua><player></aqua><gray>: <gold><client>"), 
+                    templates));
         }
     }
 

@@ -7,5 +7,5 @@
       "4drian3d"
     ],
     "dependencies": [],
-    "main": "net.dreamerzero.ClientCatcher.Catcher"
+    "main": "net.dreamerzero.clientcatcher.Catcher"
   }
