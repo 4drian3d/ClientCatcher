@@ -16,7 +16,7 @@ import net.kyori.adventure.text.minimessage.Template;
 
 public class ClientCommand implements SimpleCommand {
     private final ProxyServer server;
-	
+
 	public ClientCommand(ProxyServer server) {
         this.server = server;
     }
@@ -26,7 +26,7 @@ public class ClientCommand implements SimpleCommand {
         final CommandSource source = invocation.source();
         final String[] args = invocation.arguments();
 
-        // The specified argument may or may not be a player, 
+        // The specified argument may or may not be a player,
         // if it is not a player, the value will be null.
         Optional<Player> player;
 
@@ -34,7 +34,7 @@ public class ClientCommand implements SimpleCommand {
             source.sendMessage(
                 MiniMessage.get().parse(
                     Catcher.getConfig().getOrSetDefault(
-                        "messages.usage", 
+                        "messages.usage",
                         "<gradient:red:white>ClientCatcher <gray>| <red>Usage: <white>/client <aqua>[user]")));
             return;
         } else if(args.length >= 1) {
@@ -49,7 +49,7 @@ public class ClientCommand implements SimpleCommand {
                         Template.of("name", args[0]), Template.of("newline", Component.newline())));
                 return;
             }
-			
+
             final var playerName = player.get().getUsername();
             final var clientbrand = player.get().getClientBrand();
             List<Template> templates = List.of(

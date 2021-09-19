@@ -21,7 +21,7 @@ public class JoinListener {
         this.server = server;
         this.plugin = plugin;
     }
-	
+
     @Subscribe(order = PostOrder.LATE)
     public void onPlayerJoin(final PostLoginEvent event) {
         final var player = event.getPlayer();
@@ -35,12 +35,13 @@ public class JoinListener {
             .buildTask(plugin, () -> {
                 var client = player.getClientBrand();
                 List<Template> templates = List.of(Template.of("player", playerName), Template.of("client", client), Template.of("newline", Component.newline()));
+				List<Template> nulltemplates = List.of(Template.of("player", playerName), Template.of("newline", Component.newline()));
                 if (client == null) {
                     server.getConsoleCommandSource().sendMessage(MiniMessage.get().parse(
                         Catcher.getConfig().getOrSetDefault(
                             "messages.null-client", 
                             "The client of <player> has returned a null value"), 
-                        templates));
+                        nulltemplates));
                     return;
                 }
                 server.getConsoleCommandSource().sendMessage(MiniMessage.get().parse(
