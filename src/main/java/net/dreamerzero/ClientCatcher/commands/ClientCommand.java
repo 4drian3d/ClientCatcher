@@ -29,7 +29,7 @@ public class ClientCommand implements SimpleCommand {
 
         // The specified argument may or may not be a player, 
         // if it is not a player, the value will be null.
-        Optional<Player> player;
+        Optional<Player> optionalPlayer;
 
         if (args.length == 0) {
             source.sendMessage(
@@ -39,9 +39,9 @@ public class ClientCommand implements SimpleCommand {
                         "<gradient:red:white>ClientCatcher <gray>| <red>Usage: <white>/client <aqua>[user]")));
             return;
         } else if(args.length >= 1) {
-            player = server.getPlayer(args[0]);
+            optionalPlayer = server.getPlayer(args[0]);
 
-			if (!player.isPresent()) {
+			if (!optionalPlayer.isPresent()) {
                 source.sendMessage(
                     MiniMessage.get().parse(
                         Catcher.getConfig().getOrSetDefault(
@@ -51,15 +51,17 @@ public class ClientCommand implements SimpleCommand {
                 return;
             }
 
-            final String playerName = player.get().getUsername();
-            final String clientbrand = player.get().getClientBrand();
+            Player player = optionalPlayer.get();
+
+            final String playerName = player.getUsername();
+            final String clientbrand = player.getClientBrand();
             List<Template> templates = List.of(
                 Template.of("player", playerName), 
                 Template.of("client", clientbrand), 
                 Template.of("newline", Component.newline()));
-            if(player.get().getModInfo().isPresent()) {
+            if(player.getModInfo().isPresent()) {
                 StringBuilder builder = new StringBuilder();
-                for(Mod mod : player.get().getModInfo().get().getMods()){
+                for(Mod mod : player.getModInfo().get().getMods()){
                     builder = builder.append("["+mod.getId()+"] ");
                 }
                 templates.add(Template.of("mods", builder.toString()));
@@ -67,7 +69,7 @@ public class ClientCommand implements SimpleCommand {
                 source.sendMessage(
                 MiniMessage.get().parse(
                     Catcher.getConfig().getOrSetDefault(
-                        "messages.client-with-mods-command", 
+                        "messages.client-with-mods-command",
                         "<red>Client of</red> <aqua><player></aqua><gray>: <gold><client><newline> <red>Mods of the client: <aqua><mods>"), 
                     templates));
             } else {
