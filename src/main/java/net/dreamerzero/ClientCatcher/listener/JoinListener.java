@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.PostLoginEvent;
+import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.event.PostOrder;
 
@@ -24,8 +25,8 @@ public class JoinListener {
 	
     @Subscribe(order = PostOrder.LATE)
     public void onPlayerJoin(final PostLoginEvent event) {
-        final var player = event.getPlayer();
-        final var playerName = player.getUsername();
+        final Player player = event.getPlayer();
+        final String playerName = player.getUsername();
         long delay = Integer.parseInt(Catcher.getConfig().getOrSetDefault("settings.delay", "7"));
         List<String> blockedClients = Catcher.getConfig().getStringList("settings.blocked-clients");
 
@@ -33,8 +34,8 @@ public class JoinListener {
         // so you should wait a few seconds before trying to get it.
         server.getScheduler()
             .buildTask(plugin, () -> {
-                var client = player.getClientBrand();
-                List<Template> templates = List.of(Template.of("player", playerName), Template.of("client", client), Template.of("newline", Component.newline()));
+                String client = player.getClientBrand();
+                List<Template> templates = List.of(Template.of("player", playerName), Template.of("newline", Component.newline()));
                 if (client == null) {
                     server.getConsoleCommandSource().sendMessage(MiniMessage.get().parse(
                         Catcher.getConfig().getOrSetDefault(
@@ -43,20 +44,18 @@ public class JoinListener {
                         templates));
                     return;
                 }
+                templates.add(Template.of("client", client));
                 server.getConsoleCommandSource().sendMessage(MiniMessage.get().parse(
                     Catcher.getConfig().getOrSetDefault(
-                        "messages.console-message", 
+                        "messages.client-console-message", 
                         "<player> has joined with client <client>"), 
                     templates));
                 for(String blockedClient : blockedClients){
                     if(client.contains(blockedClient)){
-                        player.disconnect(
-                            MiniMessage.get().parse(
-                                Catcher.getConfig().getString("messages.disconnect-message"), 
-                                templates));
+                        player.disconnect(MiniMessage.get().parse(
+                            Catcher.getConfig().getString("messages.disconnect-message"), templates));
                     }
                 }
-
             })
             .delay(delay, TimeUnit.SECONDS)
             .schedule();

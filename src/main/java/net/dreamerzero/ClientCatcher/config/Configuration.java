@@ -30,8 +30,14 @@ public class Configuration {
             "client-command", 
             "<red>Client of</red> <aqua><player></aqua><gray>: <gold><client>");
         Catcher.getConfig().setDefault(
-            "console-message", 
+            "client-with-mods-command", 
+            "<red>Client of</red> <aqua><player></aqua><gray>: <gold><client><newline> <red>Mods of the client: <aqua><mods>");
+        Catcher.getConfig().setDefault(
+            "client-console-message", 
             "<aqua><player> <red>has joined with client <aqua><client>");
+        Catcher.getConfig().setDefault(
+            "mods-console-message", 
+            "<aqua><player> <red>has joined with mods: <aqua><mods>");
         Catcher.getConfig().setDefault(
             "null-client", 
             "<color:#AB8138>The client of <white><player></white> has returned a null value");
@@ -41,7 +47,7 @@ public class Configuration {
         Catcher.getConfig().setPathPrefix("settings");
         Catcher.getConfig().setDefault(
             "delay", 
-            "7");
+            "5");
         Catcher.getConfig().setDefault(
             "blocked-clients", 
             List.of("wurst", "huzuni"));

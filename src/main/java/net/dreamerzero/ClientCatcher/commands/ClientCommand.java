@@ -8,6 +8,7 @@ import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.command.SimpleCommand;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
+import com.velocitypowered.api.util.ModInfo.Mod;
 
 import net.dreamerzero.clientcatcher.Catcher;
 import net.kyori.adventure.text.Component;
@@ -34,7 +35,7 @@ public class ClientCommand implements SimpleCommand {
             source.sendMessage(
                 MiniMessage.get().parse(
                     Catcher.getConfig().getOrSetDefault(
-                        "messages.usage", 
+                        "messages.usage",
                         "<gradient:red:white>ClientCatcher <gray>| <red>Usage: <white>/client <aqua>[user]")));
             return;
         } else if(args.length >= 1) {
@@ -49,19 +50,34 @@ public class ClientCommand implements SimpleCommand {
                         Template.of("name", args[0]), Template.of("newline", Component.newline())));
                 return;
             }
-			
-            final var playerName = player.get().getUsername();
-            final var clientbrand = player.get().getClientBrand();
+
+            final String playerName = player.get().getUsername();
+            final String clientbrand = player.get().getClientBrand();
             List<Template> templates = List.of(
                 Template.of("player", playerName), 
                 Template.of("client", clientbrand), 
                 Template.of("newline", Component.newline()));
-            source.sendMessage(
+            if(player.get().getModInfo().isPresent()) {
+                StringBuilder builder = new StringBuilder();
+                for(Mod mod : player.get().getModInfo().get().getMods()){
+                    builder = builder.append("["+mod.getId()+"] ");
+                }
+                templates.add(Template.of("mods", builder.toString()));
+
+                source.sendMessage(
                 MiniMessage.get().parse(
                     Catcher.getConfig().getOrSetDefault(
-                        "messages.client-command", 
+                        "messages.client-with-mods-command", 
+                        "<red>Client of</red> <aqua><player></aqua><gray>: <gold><client><newline> <red>Mods of the client: <aqua><mods>"), 
+                    templates));
+            } else {
+                source.sendMessage(
+                MiniMessage.get().parse(
+                    Catcher.getConfig().getOrSetDefault(
+                        "messages.client-command",
                         "<red>Client of</red> <aqua><player></aqua><gray>: <gold><client>"), 
                     templates));
+            }
         }
     }
 
@@ -70,7 +86,7 @@ public class ClientCommand implements SimpleCommand {
         List<String> players = new ArrayList<>();
         var allplayers = server.getAllPlayers();
         for (Player player : allplayers) {
-            var playername = player.getUsername();
+            String playername = player.getUsername();
             players.add(playername);
         }
         return players;
