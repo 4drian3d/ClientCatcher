@@ -17,7 +17,6 @@ import net.kyori.adventure.text.minimessage.Template;
 
 public class ClientCommand implements SimpleCommand {
     private final ProxyServer server;
-	
 	public ClientCommand(ProxyServer server) {
         this.server = server;
     }
@@ -45,8 +44,8 @@ public class ClientCommand implements SimpleCommand {
                 source.sendMessage(
                     MiniMessage.get().parse(
                         Catcher.getConfig().getOrSetDefault(
-                            "messages.unknown-player", 
-                            "<red><name> is not a player or is not online"), 
+                            "messages.unknown-player",
+                            "<red><name> is not a player or is not online"),
                         Template.of("name", args[0]), Template.of("newline", Component.newline())));
                 return;
             }
@@ -56,8 +55,8 @@ public class ClientCommand implements SimpleCommand {
             final String playerName = player.getUsername();
             final String clientbrand = player.getClientBrand();
             List<Template> templates = List.of(
-                Template.of("player", playerName), 
-                Template.of("client", clientbrand), 
+                Template.of("player", playerName),
+                Template.of("client", clientbrand),
                 Template.of("newline", Component.newline()));
             if(player.getModInfo().isPresent()) {
                 StringBuilder builder = new StringBuilder();

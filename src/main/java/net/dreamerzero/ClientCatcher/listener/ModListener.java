@@ -15,7 +15,6 @@ import net.kyori.adventure.text.minimessage.Template;
 
 public class ModListener {
     private final ProxyServer server;
-
     public ModListener(final ProxyServer server) {
         this.server = server;
     }
@@ -30,13 +29,14 @@ public class ModListener {
         }
 
         List<Template> templates = List.of(
-                Template.of("player", player.getUsername()),
-                Template.of("newline", Component.newline()),
-                Template.of("mods", builder.toString()));
-                server.getConsoleCommandSource().sendMessage(MiniMessage.get().parse(
-                    Catcher.getConfig().getOrSetDefault(
-                        "messages.mods-console-message",
-                        "<player> has joined with mods: <mods>"), 
-                    templates));
+            Template.of("player", player.getUsername()),
+            Template.of("newline", Component.newline()),
+            Template.of("mods", builder.toString()));
+
+        server.getConsoleCommandSource().sendMessage(MiniMessage.get().parse(
+            Catcher.getConfig().getOrSetDefault(
+                "messages.mods-console-message",
+                "<player> has joined with mods: <mods>"), 
+                templates));
     }
 }

@@ -4,8 +4,9 @@
 
 Simple Velocity plugin to get the client with which a player has connected to your server
 
-The plugin is not fully effective, several malicious clients hide their client branding when entering the server or impersonate vanilla clients. 
+The plugin is not fully effective, several malicious clients hide their client branding when entering the server or impersonate vanilla clients.
 However, the plugin can detect several clients such as Forge, Fabric, LiteLoader, Lunar, Vanilla, and others.
+It also detects Forge 1.7.10 - 1.12.2 mods.
 
 ### Client Command
 
@@ -23,7 +24,7 @@ However, the plugin can detect several clients such as Forge, Fabric, LiteLoader
             <td><code>/client</code></td>
             <td>[User]</td>
             <td>clientcatcher.command</td>
-            <td>Main plugin command. Shows you the client the player is connected to.</td>
+            <td>Main plugin command. Shows you the client with mods(if have) of the player is connected to.</td>
         </tr>
     </tbody>
 </table>
