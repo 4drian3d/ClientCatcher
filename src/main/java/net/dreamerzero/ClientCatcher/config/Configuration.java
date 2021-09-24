@@ -36,7 +36,7 @@ public class Configuration {
             "<red>You have been disconnected for the use of forbidden clients.</red> <newline><color:#E96E6E>Please change to an allowed client to log in again.</color>");
         Catcher.getConfig().setDefault(
             "settings.delay", 
-            "5");
+            "6");
         Catcher.getConfig().setDefault(
             "settings.blocked-clients", 
             List.of("wurst", "huzuni"));

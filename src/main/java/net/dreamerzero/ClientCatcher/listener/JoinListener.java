@@ -22,7 +22,7 @@ public class JoinListener {
         this.server = server;
         this.plugin = plugin;
     }
-	
+
     @Subscribe(order = PostOrder.LATE)
     public void onPlayerJoin(final PostLoginEvent event) {
         final Player player = event.getPlayer();
@@ -30,25 +30,27 @@ public class JoinListener {
         long delay = Integer.parseInt(Catcher.getConfig().getOrSetDefault("settings.delay", "7"));
         List<String> blockedClients = Catcher.getConfig().getStringList("settings.blocked-clients");
 
-        // The client sends the client brand seconds after logging in, 
+        // The client sends the client brand seconds after logging in,
         // so you should wait a few seconds before trying to get it.
         server.getScheduler()
             .buildTask(plugin, () -> {
                 String client = player.getClientBrand();
-                List<Template> templates = List.of(Template.of("player", playerName), Template.of("newline", Component.newline()));
                 if (client == null) {
                     server.getConsoleCommandSource().sendMessage(MiniMessage.get().parse(
                         Catcher.getConfig().getOrSetDefault(
-                            "messages.null-client", 
-                            "The client of <player> has returned a null value"), 
-                        templates));
+                            "messages.null-client",
+                            "The client of <player> has returned a null value"),
+                            Template.of("player", playerName), Template.of("newline", Component.newline())));
                     return;
                 }
-                templates.add(Template.of("client", client));
+                List<Template> templates = List.of(
+                    Template.of("player", playerName),
+                    Template.of("newline", Component.newline()),
+                    Template.of("client", client));
                 server.getConsoleCommandSource().sendMessage(MiniMessage.get().parse(
                     Catcher.getConfig().getOrSetDefault(
-                        "messages.client-console-message", 
-                        "<player> has joined with client <client>"), 
+                        "messages.client-console-message",
+                        "<player> has joined with client <client>"),
                     templates));
                 for(String blockedClient : blockedClients){
                     if(client.contains(blockedClient)){
