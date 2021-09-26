@@ -32,7 +32,7 @@ public class ClientCommand implements SimpleCommand {
 
         if (args.length == 0) {
             source.sendMessage(
-                MiniMessage.get().parse(
+                MiniMessage.miniMessage().parse(
                     Catcher.getConfig().getOrSetDefault(
                         "messages.usage",
                         "<gradient:red:white>ClientCatcher <gray>| <red>Usage: <white>/client <aqua>[user]")));
@@ -42,7 +42,7 @@ public class ClientCommand implements SimpleCommand {
 
 			if (!optionalPlayer.isPresent()) {
                 source.sendMessage(
-                    MiniMessage.get().parse(
+                    MiniMessage.miniMessage().parse(
                         Catcher.getConfig().getOrSetDefault(
                             "messages.unknown-player",
                             "<red><name> is not a player or is not online"),
@@ -66,14 +66,14 @@ public class ClientCommand implements SimpleCommand {
                 templates.add(Template.of("mods", builder.toString()));
 
                 source.sendMessage(
-                MiniMessage.get().parse(
+                MiniMessage.miniMessage().parse(
                     Catcher.getConfig().getOrSetDefault(
                         "messages.client-with-mods-command",
                         "<red>Client of</red> <aqua><player></aqua><gray>: <gold><client><newline> <red>Mods of the client: <aqua><mods>"), 
                     templates));
             } else {
                 source.sendMessage(
-                MiniMessage.get().parse(
+                MiniMessage.miniMessage().parse(
                     Catcher.getConfig().getOrSetDefault(
                         "messages.client-command",
                         "<red>Client of</red> <aqua><player></aqua><gray>: <gold><client>"), 

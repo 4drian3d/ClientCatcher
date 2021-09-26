@@ -36,7 +36,7 @@ public class JoinListener {
             .buildTask(plugin, () -> {
                 String client = player.getClientBrand();
                 if (client == null) {
-                    server.getConsoleCommandSource().sendMessage(MiniMessage.get().parse(
+                    server.getConsoleCommandSource().sendMessage(MiniMessage.miniMessage().parse(
                         Catcher.getConfig().getOrSetDefault(
                             "messages.null-client",
                             "The client of <player> has returned a null value"),
@@ -47,14 +47,14 @@ public class JoinListener {
                     Template.of("player", playerName),
                     Template.of("newline", Component.newline()),
                     Template.of("client", client));
-                server.getConsoleCommandSource().sendMessage(MiniMessage.get().parse(
+                server.getConsoleCommandSource().sendMessage(MiniMessage.miniMessage().parse(
                     Catcher.getConfig().getOrSetDefault(
                         "messages.client-console-message",
                         "<player> has joined with client <client>"),
                     templates));
                 for(String blockedClient : blockedClients){
                     if(client.contains(blockedClient)){
-                        player.disconnect(MiniMessage.get().parse(
+                        player.disconnect(MiniMessage.miniMessage().parse(
                             Catcher.getConfig().getString("messages.disconnect-message"), templates));
                     }
                 }

@@ -33,7 +33,7 @@ public class ModListener {
             Template.of("newline", Component.newline()),
             Template.of("mods", builder.toString()));
 
-        server.getConsoleCommandSource().sendMessage(MiniMessage.get().parse(
+        server.getConsoleCommandSource().sendMessage(MiniMessage.miniMessage().parse(
             Catcher.getConfig().getOrSetDefault(
                 "messages.mods-console-message",
                 "<player> has joined with mods: <mods>"), 
