@@ -15,7 +15,7 @@ import com.velocitypowered.api.event.PostOrder;
 
 import net.dreamerzero.clientcatcher.Catcher;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.Component;
+import static net.kyori.adventure.text.Component.newline;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.Template;
 
@@ -46,7 +46,7 @@ public class JoinListener {
         server.getScheduler().buildTask(plugin, () -> {
             List<Template> templates = List.of(
                 Template.of("player", player.getUsername()),
-                Template.of("newline", Component.newline()));
+                Template.of("newline", newline()));
 
             Optional<String> client = Optional.ofNullable(player.getClientBrand());
 

@@ -18,9 +18,11 @@ import net.kyori.adventure.text.minimessage.Template;
 public class ClientCommand implements SimpleCommand {
     private final ProxyServer server;
     private Yaml config;
+    private MiniMessage mm;
 	public ClientCommand(ProxyServer server, Yaml config) {
         this.server = server;
         this.config = config;
+        this.mm = MiniMessage.miniMessage();
     }
 
     @Override
@@ -34,32 +36,29 @@ public class ClientCommand implements SimpleCommand {
 
         if (args.length == 0) {
             source.sendMessage(
-                MiniMessage.miniMessage().parse(
+                mm.parse(
                     config.getOrSetDefault(
                         "messages.usage",
                         "<gradient:red:white>ClientCatcher <gray>| <red>Usage: <white>/client <aqua>[user]")));
             return;
         } else if(args.length >= 1) {
             optionalPlayer = server.getPlayer(args[0]);
+            List<Template> templates = List.of(Template.of("newline", Component.newline()));
 
 			if (!optionalPlayer.isPresent()) {
+                templates.add(Template.of("name", args[0]));
                 source.sendMessage(
-                    MiniMessage.miniMessage().parse(
-                        config.getOrSetDefault(
-                            "messages.unknown-player",
-                            "<red><name> is not a player or is not online"),
-                        Template.of("name", args[0]), Template.of("newline", Component.newline())));
+                    mm.parse(config.getOrSetDefault(
+                        "messages.unknown-player",
+                        "<red><name> is not a player or is not online"),
+                    templates));
                 return;
             }
 
             Player player = optionalPlayer.get();
 
-            final String playerName = player.getUsername();
-            final String clientbrand = player.getClientBrand();
-            List<Template> templates = List.of(
-                Template.of("player", playerName),
-                Template.of("client", clientbrand),
-                Template.of("newline", Component.newline()));
+            templates.add(Template.of("client", player.getClientBrand()));
+            templates.add(Template.of("player", player.getUsername()));
             if(player.getModInfo().isPresent()) {
                 StringBuilder builder = new StringBuilder();
                 for(Mod mod : player.getModInfo().get().getMods()){
@@ -68,17 +67,15 @@ public class ClientCommand implements SimpleCommand {
                 templates.add(Template.of("mods", builder.toString()));
 
                 source.sendMessage(
-                MiniMessage.miniMessage().parse(
-                    config.getOrSetDefault(
+                    mm.parse(config.getOrSetDefault(
                         "messages.client-with-mods-command",
                         "<red>Client of</red> <aqua><player></aqua><gray>: <gold><client><newline> <red>Mods of the client: <aqua><mods>"), 
                     templates));
             } else {
                 source.sendMessage(
-                MiniMessage.miniMessage().parse(
-                    config.getOrSetDefault(
+                    mm.parse(config.getOrSetDefault(
                         "messages.client-command",
-                        "<red>Client of</red> <aqua><player></aqua><gray>: <gold><client>"), 
+                        "<red>Client of</red> <aqua><player></aqua><gray>: <gold><client>"),
                     templates));
             }
         }
