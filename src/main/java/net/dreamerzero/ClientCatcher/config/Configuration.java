@@ -9,35 +9,42 @@ public class Configuration {
     public static void setDefaultConfig(Yaml config){
         config.setConfigSettings(ConfigSettings.PRESERVE_COMMENTS);
         config.setDefault(
-            "messages.usage", 
+            "messages.usage",
             "<gradient:red:white>ClientCatcher <gray>| <red>Usage: <white>/client <aqua>[user]");
         config.setDefault(
-            "messages.unknown-player", 
+            "messages.unknown-player",
             "<red><name> is not a player or is not online");
         config.setDefault(
-            "messages.client-command", 
+            "messages.client-command",
             "<red>Client of</red> <aqua><player></aqua><gray>: <gold><client>");
         config.setDefault(
-            "messages.client-with-mods-command", 
-            "<red>Client of</red> <aqua><player></aqua><gray>: <gold><client><newline> <red>Mods of the client: <aqua><mods>");
+            "messages.client-with-mods-command",
+            "<red>Client of</red> <aqua><player></aqua><gray>: <gold><client><newline><red>Mods of the client: <aqua><mods>");
+        config.setDefault("settings.broadcast-alert-to-op", true);
+        config.setDefault("settings.show-null-client-message", false);
         config.setDefault(
-            "messages.client-console-message", 
-            "<aqua><player> <red>has joined with client <aqua><client>");
-        config.setDefault(
-            "messages.mods-console-message", 
-            "<aqua><player> <red>has joined with mods: <aqua><mods>");
-        config.setDefault(
-            "messages.null-client", 
-            "<color:#AB8138>The client of <white><player></white> has returned a null value");
-        config.setDefault(
-            "messages.disconnect-message", 
-            "<red>You have been disconnected for the use of forbidden clients.</red> <newline><color:#E96E6E>Please change to an allowed client to log in again.</color>");
-        config.setDefault(
-            "settings.delay",
+            "settings.check-delay",
             "6");
         config.setDefault(
+            "messages.client-alert-message",
+            "<aqua><player> <red>has joined with client <aqua><client>");
+        config.setDefault(
+            "messages.client-with-mods-alert-message",
+            "<aqua><player> <red>has joined with mods: <aqua><mods>");
+        config.setDefault(
+            "messages.null-client",
+            "<color:#AB8138>The client of <white><player></white> has returned a null value");
+        config.setDefault(
+            "messages.client-disconnect-message",
+            "<red>You have been disconnected for the use of forbidden clients.</red> <newline><color:#E96E6E>Please change to an allowed client to log in again.</color>");
+        config.setDefault(
+            "messages.mods-disconnect-message",
+            "<red>You have been disconnected for the use of forbidden mods.</red> <newline><color:#E96E6E>Please remove <mod> in order to join the server.</color>");
+        config.setDefault(
             "settings.blocked-clients",
-            List.of("wurst", "huzuni"));
+            List.of(
+                "wurst",
+                "huzuni"));
         config.setDefault(
             "settings.blocked-mods",
             List.of(

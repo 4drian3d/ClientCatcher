@@ -11,7 +11,6 @@ import de.leonhard.storage.Yaml;
 import net.dreamerzero.clientcatcher.commands.ClientCommand;
 import net.dreamerzero.clientcatcher.config.Configuration;
 import net.dreamerzero.clientcatcher.listener.JoinListener;
-import net.dreamerzero.clientcatcher.listener.ModListener;
 
 public class Catcher {
     private final ProxyServer server;
@@ -33,7 +32,6 @@ public class Catcher {
         Configuration.setDefaultConfig(config);
         // Register the PostLogin listener
         server.getEventManager().register(this, new JoinListener(server, this, config));
-        server.getEventManager().register(this, new ModListener(server, config));
         // Register the "/client" command
         server.getCommandManager().register("client", new ClientCommand(server, config));
     }
