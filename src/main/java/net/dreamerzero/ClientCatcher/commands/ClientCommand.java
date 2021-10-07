@@ -10,15 +10,17 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.util.ModInfo.Mod;
 
-import net.dreamerzero.clientcatcher.Catcher;
+import de.leonhard.storage.Yaml;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.Template;
 
 public class ClientCommand implements SimpleCommand {
     private final ProxyServer server;
-	public ClientCommand(ProxyServer server) {
+    private Yaml config;
+	public ClientCommand(ProxyServer server, Yaml config) {
         this.server = server;
+        this.config = config;
     }
 
     @Override
@@ -33,7 +35,7 @@ public class ClientCommand implements SimpleCommand {
         if (args.length == 0) {
             source.sendMessage(
                 MiniMessage.miniMessage().parse(
-                    Catcher.getConfig().getOrSetDefault(
+                    config.getOrSetDefault(
                         "messages.usage",
                         "<gradient:red:white>ClientCatcher <gray>| <red>Usage: <white>/client <aqua>[user]")));
             return;
@@ -43,7 +45,7 @@ public class ClientCommand implements SimpleCommand {
 			if (!optionalPlayer.isPresent()) {
                 source.sendMessage(
                     MiniMessage.miniMessage().parse(
-                        Catcher.getConfig().getOrSetDefault(
+                        config.getOrSetDefault(
                             "messages.unknown-player",
                             "<red><name> is not a player or is not online"),
                         Template.of("name", args[0]), Template.of("newline", Component.newline())));
@@ -67,14 +69,14 @@ public class ClientCommand implements SimpleCommand {
 
                 source.sendMessage(
                 MiniMessage.miniMessage().parse(
-                    Catcher.getConfig().getOrSetDefault(
+                    config.getOrSetDefault(
                         "messages.client-with-mods-command",
                         "<red>Client of</red> <aqua><player></aqua><gray>: <gold><client><newline> <red>Mods of the client: <aqua><mods>"), 
                     templates));
             } else {
                 source.sendMessage(
                 MiniMessage.miniMessage().parse(
-                    Catcher.getConfig().getOrSetDefault(
+                    config.getOrSetDefault(
                         "messages.client-command",
                         "<red>Client of</red> <aqua><player></aqua><gray>: <gold><client>"), 
                     templates));

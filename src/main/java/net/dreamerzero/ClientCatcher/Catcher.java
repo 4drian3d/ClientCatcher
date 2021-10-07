@@ -16,12 +16,13 @@ import net.dreamerzero.clientcatcher.listener.ModListener;
 public class Catcher {
     private final ProxyServer server;
     private final Logger logger;
-    static Yaml config = new Yaml("config", "plugins/clientcatcher");
+    private Yaml config;
 
     @Inject
     public Catcher(final ProxyServer server, final Logger logger) {
         this.server = server;
         this.logger = logger;
+        this.config = new Yaml("config", "plugins/ClientCatcher");
     }
 
     @Subscribe
@@ -29,14 +30,11 @@ public class Catcher {
         // :)
         logger.info("ClientCatcher has started, have a nice day.");
         // Default config
-        Configuration.setDefaultConfig();
+        Configuration.setDefaultConfig(config);
         // Register the PostLogin listener
-        server.getEventManager().register(this, new JoinListener(server, this));
-        server.getEventManager().register(this, new ModListener(server));
+        server.getEventManager().register(this, new JoinListener(server, this, config));
+        server.getEventManager().register(this, new ModListener(server, config));
         // Register the "/client" command
-        server.getCommandManager().register("client", new ClientCommand(server));
-    }
-    public static Yaml getConfig(){
-        return config;
+        server.getCommandManager().register("client", new ClientCommand(server, config));
     }
 }

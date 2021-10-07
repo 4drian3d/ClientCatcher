@@ -8,15 +8,17 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.util.ModInfo.Mod;
 
-import net.dreamerzero.clientcatcher.Catcher;
+import de.leonhard.storage.Yaml;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.Template;
 
 public class ModListener {
     private final ProxyServer server;
-    public ModListener(final ProxyServer server) {
+    private Yaml config;
+    public ModListener(final ProxyServer server, Yaml config) {
         this.server = server;
+        this.config = config;
     }
 
     @Subscribe
@@ -34,9 +36,9 @@ public class ModListener {
             Template.of("mods", builder.toString()));
 
         server.getConsoleCommandSource().sendMessage(MiniMessage.miniMessage().parse(
-            Catcher.getConfig().getOrSetDefault(
+            config.getOrSetDefault(
                 "messages.mods-console-message",
-                "<player> has joined with mods: <mods>"), 
+                "<player> has joined with mods: <mods>"),
                 templates));
     }
 }
