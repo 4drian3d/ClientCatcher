@@ -6,7 +6,7 @@
 
     <groupId>net.dreamerzero.ClientCatcher</groupId>
     <artifactId>ClientCatcher</artifactId>
-    <version>2.1.0</version>
+    <version>2.2.0</version>
     <packaging>jar</packaging>
 
     <properties>

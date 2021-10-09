@@ -1,6 +1,5 @@
 package net.dreamerzero.clientcatcher.commands;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +18,7 @@ public class ClientCommand implements SimpleCommand {
     private final ProxyServer server;
     private Yaml config;
     private MiniMessage mm;
-	public ClientCommand(ProxyServer server, Yaml config) {
+    public ClientCommand(ProxyServer server, Yaml config) {
         this.server = server;
         this.config = config;
         this.mm = MiniMessage.miniMessage();
@@ -83,13 +82,7 @@ public class ClientCommand implements SimpleCommand {
 
     @Override
     public List<String> suggest(final Invocation invocation) {
-        List<String> players = new ArrayList<>();
-        var allplayers = server.getAllPlayers();
-        for (Player player : allplayers) {
-            String playername = player.getUsername();
-            players.add(playername);
-        }
-        return players;
+        return server.getAllPlayers().stream().limit(30).map(player -> player.getUsername()).toList();
     }
 
     @Override

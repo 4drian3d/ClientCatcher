@@ -39,7 +39,6 @@ public class JoinListener {
         final Player player = event.getPlayer();
         broadcastToOp = config.getBoolean("settings.broadcast-alert-to-op");
         delay = config.getLong("settings.check-delay");
-        List<String> blockedClients = config.getStringList("settings.blocked-clients");
 
         // The client sends the client brand seconds after logging in,
         // so you should wait a few seconds before trying to get it.
@@ -53,7 +52,7 @@ public class JoinListener {
             Audience ops = Audience.audience(Audience.audience(
                 server.getAllPlayers().stream().filter(
                     user -> user.hasPermission("clientcatcher.notifications")).toList()),
-                    server.getConsoleCommandSource());
+                server.getConsoleCommandSource());
 
             if (client.isEmpty() && config.getBoolean("settings.show-null-client-message")) {
                 server.getConsoleCommandSource().sendMessage(mm.parse(
@@ -64,24 +63,22 @@ public class JoinListener {
 
             templates.add(Template.of("client", client.get()));
 
-            for(String blockedClient : blockedClients){
-                if(client.get().contains(blockedClient)){
-                    player.disconnect(mm.parse(
+            if(config.getStringList("settings.blocked-clients")
+                .stream().anyMatch(blockedClient -> client.get().contains(blockedClient))){
+                player.disconnect(mm.parse(
                         config.getString("messages.client-disconnect-message"), templates));
                     return;
-                }
             }
 
             if(player.getModInfo().isPresent()){
-                player.getModInfo().get().getMods().forEach(mod -> {
-                    config.getStringList("settings.blocked-mods").forEach(blockedMod -> {
-                        if(mod.getId().contains(blockedMod)){
-                            player.disconnect(mm.parse(
-                                config.getString("messages.mods-disconnect-message"), templates));
-                            return;
-                        }
-                    });
-                });
+                if(player.getModInfo().get().getMods().stream()
+                .anyMatch(mod -> config.getStringList("settings.blocked-mods")
+                .contains(mod.getId()))){
+
+                    player.disconnect(mm.parse(
+                        config.getString("messages.mods-disconnect-message"), templates));
+                    return;
+                }
                 templates.add(Template.of("mods", player.getModInfo().get().getMods().toString()));
                 if(broadcastToOp){
                     ops.sendMessage(mm.parse(
