@@ -24,7 +24,7 @@ public class Configuration {
         config.setDefault("settings.show-null-client-message", false);
         config.setDefault(
             "settings.check-delay",
-            "6");
+            "3");
         config.setDefault(
             "messages.client-alert-message",
             "<aqua><player> <red>has joined with client <aqua><client>");

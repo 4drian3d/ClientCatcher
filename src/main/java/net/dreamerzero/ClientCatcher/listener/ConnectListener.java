@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import com.velocitypowered.api.event.Subscribe;
-import com.velocitypowered.api.event.connection.PostLoginEvent;
+import com.velocitypowered.api.event.player.ServerPostConnectEvent;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 
@@ -19,7 +19,7 @@ import static net.kyori.adventure.text.Component.newline;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.Template;
 
-public class JoinListener {
+public class ConnectListener {
     private final ProxyServer server;
     private final Catcher plugin;
     private Yaml config;
@@ -27,7 +27,7 @@ public class JoinListener {
     private MiniMessage mm;
     private long delay;
 
-    public JoinListener(final ProxyServer server, final Catcher plugin, Yaml config) {
+    public ConnectListener(final ProxyServer server, final Catcher plugin, Yaml config) {
         this.server = server;
         this.plugin = plugin;
         this.config = config;
@@ -35,8 +35,9 @@ public class JoinListener {
     }
 
     @Subscribe(order = PostOrder.LATE)
-    public void onPlayerJoin(final PostLoginEvent event) {
-        final Player player = event.getPlayer();
+    public void onPlayerConnect(ServerPostConnectEvent event) {
+        if(event.getPreviousServer() != null) return;
+        Player player = event.getPlayer();
         broadcastToOp = config.getBoolean("settings.broadcast-alert-to-op");
         delay = config.getLong("settings.check-delay");
 
