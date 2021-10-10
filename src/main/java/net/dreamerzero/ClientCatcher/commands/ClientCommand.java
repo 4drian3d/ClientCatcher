@@ -1,6 +1,7 @@
 package net.dreamerzero.clientcatcher.commands;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import com.velocitypowered.api.command.CommandSource;
@@ -29,7 +30,7 @@ public class ClientCommand implements SimpleCommand {
         final CommandSource source = invocation.source();
         final String[] args = invocation.arguments();
 
-        // The specified argument may or may not be a player, 
+        // The specified argument may or may not be a player,
         // if it is not a player, the value will be null.
         Optional<Player> optionalPlayer;
 
@@ -42,9 +43,10 @@ public class ClientCommand implements SimpleCommand {
             return;
         } else if(args.length >= 1) {
             optionalPlayer = server.getPlayer(args[0]);
-            List<Template> templates = List.of(Template.of("newline", Component.newline()));
+            List<Template> templates = new ArrayList<>();
+            templates.add(Template.of("newline", Component.newline()));
 
-			if (!optionalPlayer.isPresent()) {
+			if (optionalPlayer.isEmpty()) {
                 templates.add(Template.of("name", args[0]));
                 source.sendMessage(
                     mm.parse(config.getOrSetDefault(

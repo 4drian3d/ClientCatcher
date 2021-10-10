@@ -1,6 +1,7 @@
 package net.dreamerzero.clientcatcher;
 
 import com.google.inject.Inject;
+import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.proxy.ProxyServer;
@@ -11,7 +12,9 @@ import de.leonhard.storage.Yaml;
 import net.dreamerzero.clientcatcher.commands.ClientCommand;
 import net.dreamerzero.clientcatcher.config.Configuration;
 import net.dreamerzero.clientcatcher.listener.JoinListener;
+import net.dreamerzero.clientcatcher.utils.Constants;
 
+@Plugin(id = "clientcatcher", name = Constants.NAME, version = Constants.VERSION, description = Constants.DESCRIPTION, authors = {"4drian3d"})
 public class Catcher {
     private final ProxyServer server;
     private final Logger logger;
