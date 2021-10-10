@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import de.leonhard.storage.Yaml;
 import net.dreamerzero.clientcatcher.commands.ClientCommand;
 import net.dreamerzero.clientcatcher.config.Configuration;
-import net.dreamerzero.clientcatcher.listener.JoinListener;
+import net.dreamerzero.clientcatcher.listener.ConnectListener;
 import net.dreamerzero.clientcatcher.utils.Constants;
 
 @Plugin(id = "clientcatcher", name = Constants.NAME, version = Constants.VERSION, description = Constants.DESCRIPTION, authors = {"4drian3d"})
@@ -34,7 +34,7 @@ public class Catcher {
         // Default config
         Configuration.setDefaultConfig(config);
         // Register the PostLogin listener
-        server.getEventManager().register(this, new JoinListener(server, this, config));
+        server.getEventManager().register(this, new ConnectListener(server, this, config));
         // Register the "/client" command
         server.getCommandManager().register("client", new ClientCommand(server, config));
     }
