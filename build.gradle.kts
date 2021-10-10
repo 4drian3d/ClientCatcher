@@ -8,12 +8,12 @@ plugins {
 
 repositories {
     maven {
-		name = "Velocity Repository"
+        name = "Velocity Repository"
         url = uri("https://nexus.velocitypowered.com/repository/maven-public/")
     }
 
     maven {
-		name = "Jitpack"
+        name = "Jitpack"
         url = uri("https://jitpack.io")
     }
 
@@ -25,8 +25,8 @@ repositories {
 dependencies {
     shadow("com.github.simplix-softworks:simplixstorage:3.2.3")
     shadow("net.kyori:adventure-text-minimessage:4.2.0-SNAPSHOT"){
-		exclude("net.kyori", "adventure-api")
-	}
+        exclude("net.kyori", "adventure-api")
+    }
 
     compileOnly("com.velocitypowered:velocity-api:3.0.1")
     annotationProcessor("com.velocitypowered:velocity-api:3.0.1")
@@ -45,17 +45,17 @@ blossom{
 }
 
 tasks {
-	build {
+    build {
         dependsOn(shadowJar)
     }
-	shadowJar {
-		dependsOn(getByName("relocateShadowJar") as ConfigureShadowRelocation)
+    shadowJar {
+        dependsOn(getByName("relocateShadowJar") as ConfigureShadowRelocation)
         minimize()
         archiveFileName.set("ClientCatcher.jar")
-		configurations = listOf(project.configurations.shadow.get())
+        configurations = listOf(project.configurations.shadow.get())
     }
 
-	create<ConfigureShadowRelocation>("relocateShadowJar") {
+    create<ConfigureShadowRelocation>("relocateShadowJar") {
         target = shadowJar.get()
         prefix = "net.dreamerzero.clientcatcher.libs"
     }
