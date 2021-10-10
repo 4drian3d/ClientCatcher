@@ -9,17 +9,17 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
-    
+
     - name: Set up JDK 17
       uses: actions/setup-java@v2.3.0
       with:
         java-version: 17
         distribution: 'temurin'
-        cache: 'maven'
+        cache: 'gradle'
 
-    - name: Build with Maven
+    - name: Build with Gradle
       uses: nick-invision/retry@v2.4.1
       with:
         timeout_minutes: 4
         max_attempts: 2
-        command: mvn -B package --file pom.xml
+        command: gradle build
