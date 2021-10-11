@@ -51,7 +51,7 @@ public class ClientBrigadier {
 
                 if(optionalPlayer.isEmpty()) {
                     templates.add(Template.of("name", arg.getInput()));
-                    arg.getSource().sendMessage(
+                    source.sendMessage(
                         mm.parse(config.getString("messages.unknown-player"), templates));
                     return 1;
                 }
