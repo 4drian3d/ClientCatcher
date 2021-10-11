@@ -1,5 +1,6 @@
 package net.dreamerzero.clientcatcher.listener;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -50,10 +51,10 @@ public class ConnectListener {
 
             Optional<String> client = Optional.ofNullable(player.getClientBrand());
 
-            Audience ops = Audience.audience(Audience.audience(
-                server.getAllPlayers().stream().filter(
-                    user -> user.hasPermission("clientcatcher.notifications")).toList()),
-                server.getConsoleCommandSource());
+            ArrayList<Audience> ops = new ArrayList<>();
+            server.getAllPlayers().stream().filter(
+                user -> user.hasPermission("clientcatcher.notifications")).forEach(ops::add);
+            ops.add(server.getConsoleCommandSource());
 
             if (client.isEmpty() && config.getBoolean("settings.show-null-client-message")) {
                 server.getConsoleCommandSource().sendMessage(mm.parse(
@@ -82,7 +83,7 @@ public class ConnectListener {
                 }
                 templates.add(Template.of("mods", player.getModInfo().get().getMods().toString()));
                 if(broadcastToOp){
-                    ops.sendMessage(mm.parse(
+                    Audience.audience(ops).sendMessage(mm.parse(
                         config.getString("messages.client-with-mods-alert-message"),
                         templates));
                     return;
@@ -90,7 +91,7 @@ public class ConnectListener {
             }
 
             if(broadcastToOp){
-                ops.sendMessage(mm.parse(
+                Audience.audience(ops).sendMessage(mm.parse(
                     config.getString("messages.client-alert-message"),
                     templates));
             }

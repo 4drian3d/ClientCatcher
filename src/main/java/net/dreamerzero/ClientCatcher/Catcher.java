@@ -9,6 +9,7 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import org.slf4j.Logger;
 
 import de.leonhard.storage.Yaml;
+import net.dreamerzero.clientcatcher.commands.ClientBrigadier;
 import net.dreamerzero.clientcatcher.commands.ClientCommand;
 import net.dreamerzero.clientcatcher.config.Configuration;
 import net.dreamerzero.clientcatcher.listener.ConnectListener;
@@ -37,5 +38,6 @@ public class Catcher {
         server.getEventManager().register(this, new ConnectListener(server, this, config));
         // Register the "/client" command
         server.getCommandManager().register("client", new ClientCommand(server, config));
+        ClientBrigadier.registerBrigadierCommand(server, config);
     }
 }

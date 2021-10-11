@@ -84,7 +84,10 @@ public class ClientCommand implements SimpleCommand {
 
     @Override
     public List<String> suggest(final Invocation invocation) {
-        return server.getAllPlayers().stream().limit(30).map(player -> player.getUsername()).toList();
+        //TODO: Convert to stream -> tolist in jdk 16 update
+        ArrayList<String> players = new ArrayList<>();
+        server.getAllPlayers().forEach(player -> players.add(player.getUsername()));
+        return players;
     }
 
     @Override
