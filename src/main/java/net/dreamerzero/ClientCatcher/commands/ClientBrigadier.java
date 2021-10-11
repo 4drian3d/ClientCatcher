@@ -18,7 +18,6 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.util.ModInfo.Mod;
 
 import de.leonhard.storage.Yaml;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.Template;
@@ -42,21 +41,26 @@ public class ClientBrigadier {
                 return builder.buildFuture();
             })
             .executes(arg -> {
-                Audience source = (Audience)arg.getSource();
-                if(arg.getSource().getPermissionValue("clientcatcher.command") != Tristate.TRUE) return 0;
+                CommandSource source = arg.getSource();
+                if(source.getPermissionValue("clientcatcher.command") != Tristate.TRUE) return 0;
+
                 Optional<Player> optionalPlayer = server.getPlayer(arg.getInput());
+
                 List<Template> templates = new ArrayList<>();
                 templates.add(Template.of("newline", Component.newline()));
+
                 if(optionalPlayer.isEmpty()) {
                     templates.add(Template.of("name", arg.getInput()));
-                    source.sendMessage(
+                    arg.getSource().sendMessage(
                         mm.parse(config.getString("messages.unknown-player"), templates));
                     return 1;
                 }
+
                 Player player = optionalPlayer.get();
 
                 templates.add(Template.of("client", player.getClientBrand()));
                 templates.add(Template.of("player", player.getUsername()));
+
                 if(player.getModInfo().isPresent()) {
                     StringBuilder builder = new StringBuilder();
                     for(Mod mod : player.getModInfo().get().getMods()){

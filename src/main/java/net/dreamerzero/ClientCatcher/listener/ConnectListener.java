@@ -9,6 +9,7 @@ import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.player.ServerPostConnectEvent;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
+import com.velocitypowered.api.util.ModInfo.Mod;
 
 import de.leonhard.storage.Yaml;
 
@@ -50,30 +51,33 @@ public class ConnectListener {
                 Template.of("newline", newline()));
 
             Optional<String> client = Optional.ofNullable(player.getClientBrand());
-
-            ArrayList<Audience> ops = new ArrayList<>();
-            server.getAllPlayers().stream().filter(
-                user -> user.hasPermission("clientcatcher.notifications")).forEach(ops::add);
-            ops.add(server.getConsoleCommandSource());
+            Audience cSource = server.getConsoleCommandSource();
 
             if (client.isEmpty() && config.getBoolean("settings.show-null-client-message")) {
-                server.getConsoleCommandSource().sendMessage(mm.parse(
+                cSource.sendMessage(mm.parse(
                     config.getString("messages.null-client"),
                     templates));
                 return;
             }
 
-            templates.add(Template.of("client", client.get()));
+            ArrayList<Audience> ops = new ArrayList<>();
+            server.getAllPlayers().stream().filter(
+                user -> user.hasPermission("clientcatcher.notifications")).forEach(ops::add);
+            ops.add(cSource);
+
+            String playerClient = client.get();
+            templates.add(Template.of("client", playerClient));
 
             if(config.getStringList("settings.blocked-clients")
-                .stream().anyMatch(blockedClient -> client.get().contains(blockedClient))){
+                .stream().anyMatch(blockedClient -> playerClient.contains(blockedClient))){
                 player.disconnect(mm.parse(
                         config.getString("messages.client-disconnect-message"), templates));
                     return;
             }
 
             if(player.getModInfo().isPresent()){
-                if(player.getModInfo().get().getMods().stream()
+                List<Mod> modList = player.getModInfo().get().getMods();
+                if(modList.stream()
                 .anyMatch(mod -> config.getStringList("settings.blocked-mods")
                 .contains(mod.getId()))){
 
@@ -81,7 +85,7 @@ public class ConnectListener {
                         config.getString("messages.mods-disconnect-message"), templates));
                     return;
                 }
-                templates.add(Template.of("mods", player.getModInfo().get().getMods().toString()));
+                templates.add(Template.of("mods", modList.toString()));
                 if(broadcastToOp){
                     Audience.audience(ops).sendMessage(mm.parse(
                         config.getString("messages.client-with-mods-alert-message"),
