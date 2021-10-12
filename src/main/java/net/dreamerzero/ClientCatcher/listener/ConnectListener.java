@@ -53,10 +53,12 @@ public class ConnectListener {
             Optional<String> client = Optional.ofNullable(player.getClientBrand());
             Audience cSource = server.getConsoleCommandSource();
 
-            if (client.isEmpty() && config.getBoolean("settings.show-null-client-message")) {
-                cSource.sendMessage(mm.parse(
-                    config.getString("messages.null-client"),
-                    templates));
+            if (client.isEmpty()){
+                if(config.getBoolean("settings.show-null-client-message")) {
+                    cSource.sendMessage(mm.parse(
+                        config.getString("messages.null-client"),
+                        templates));
+                }
                 return;
             }
 

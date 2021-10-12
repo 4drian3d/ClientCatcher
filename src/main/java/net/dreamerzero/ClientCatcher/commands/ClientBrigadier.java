@@ -44,13 +44,13 @@ public class ClientBrigadier {
                 CommandSource source = arg.getSource();
                 if(source.getPermissionValue("clientcatcher.command") != Tristate.TRUE) return 0;
 
-                Optional<Player> optionalPlayer = server.getPlayer(arg.getInput());
+                Optional<Player> optionalPlayer = server.getPlayer(arg.getArgument("player", String.class));
 
                 List<Template> templates = new ArrayList<>();
                 templates.add(Template.of("newline", Component.newline()));
 
                 if(optionalPlayer.isEmpty()) {
-                    templates.add(Template.of("name", arg.getInput()));
+                    templates.add(Template.of("name", arg.getArgument("player", String.class)));
                     source.sendMessage(
                         mm.parse(config.getString("messages.unknown-player"), templates));
                     return 1;
