@@ -1,10 +1,13 @@
 package net.dreamerzero.clientcatcher.listener;
 
+import static net.kyori.adventure.text.Component.newline;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import com.velocitypowered.api.event.PostOrder;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.player.ServerPostConnectEvent;
 import com.velocitypowered.api.proxy.Player;
@@ -12,12 +15,9 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.util.ModInfo.Mod;
 
 import de.leonhard.storage.Yaml;
-
-import com.velocitypowered.api.event.PostOrder;
-
 import net.dreamerzero.clientcatcher.Catcher;
+import net.dreamerzero.clientcatcher.ModdedClient;
 import net.kyori.adventure.audience.Audience;
-import static net.kyori.adventure.text.Component.newline;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.Template;
 
@@ -40,6 +40,7 @@ public class ConnectListener {
     public void onPlayerConnect(ServerPostConnectEvent event) {
         if(event.getPreviousServer() != null) return;
         Player player = event.getPlayer();
+        ModdedClient mclient = ModdedClient.getModdedClient(player.getUniqueId());
         broadcastToOp = config.getBoolean("settings.broadcast-alert-to-op");
         delay = config.getLong("settings.check-delay");
 
@@ -47,10 +48,10 @@ public class ConnectListener {
         // so you should wait a few seconds before trying to get it.
         server.getScheduler().buildTask(plugin, () -> {
             List<Template> templates = List.of(
-                Template.of("player", player.getUsername()),
+                Template.of("player", mclient.username()),
                 Template.of("newline", newline()));
 
-            Optional<String> client = Optional.ofNullable(player.getClientBrand());
+            Optional<String> client = mclient.getClient();
             Audience cSource = server.getConsoleCommandSource();
 
             if (client.isEmpty()){
@@ -77,8 +78,8 @@ public class ConnectListener {
                     return;
             }
 
-            if(player.getModInfo().isPresent()){
-                List<Mod> modList = player.getModInfo().get().getMods();
+            if(mclient.getMods().isPresent()){
+                List<Mod> modList = mclient.getMods().get().getMods();
                 if(modList.stream()
                 .anyMatch(mod -> config.getStringList("settings.blocked-mods")
                 .contains(mod.getId()))){

@@ -12,12 +12,12 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.velocitypowered.api.command.BrigadierCommand;
 import com.velocitypowered.api.command.CommandMeta;
 import com.velocitypowered.api.command.CommandSource;
-import com.velocitypowered.api.permission.Tristate;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.util.ModInfo.Mod;
 
 import de.leonhard.storage.Yaml;
+import net.dreamerzero.clientcatcher.ModdedClient;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.Template;
@@ -29,8 +29,9 @@ public class ClientBrigadier {
         LiteralCommandNode<CommandSource> clientCommand = LiteralArgumentBuilder
             .<CommandSource>literal("client")
             .executes(cmd -> {
+                    if(!cmd.getSource().hasPermission("clientcatcher.command")) return 0;
                     cmd.getSource().sendMessage(mm.parse(config.getString("messages.usage")));
-                    return 0;
+                    return 1;
                 }
             ).build();
 
@@ -42,7 +43,6 @@ public class ClientBrigadier {
             })
             .executes(arg -> {
                 CommandSource source = arg.getSource();
-                if(source.getPermissionValue("clientcatcher.command") != Tristate.TRUE) return 0;
 
                 Optional<Player> optionalPlayer = server.getPlayer(arg.getArgument("player", String.class));
 
@@ -58,24 +58,25 @@ public class ClientBrigadier {
 
                 Player player = optionalPlayer.get();
 
-                templates.add(Template.of("client", player.getClientBrand()));
+                ModdedClient mClient = ModdedClient.getModdedClient(player.getUniqueId());
+
+                templates.add(Template.of("client", mClient.getClient().isPresent() ? mClient.getClient().get() : "Client not avialable"));
                 templates.add(Template.of("player", player.getUsername()));
 
-                if(player.getModInfo().isPresent()) {
+                if(mClient.hasMods()) {
                     StringBuilder builder = new StringBuilder();
-                    for(Mod mod : player.getModInfo().get().getMods()){
+                    for(Mod mod : mClient.getModList()){
                         builder = builder.append("["+mod.getId()+"] ");
                     }
                     templates.add(Template.of("mods", builder.toString()));
 
                     source.sendMessage(
                         mm.parse(config.getString("messages.client-with-mods-command"), templates));
-                    return 1;
                 } else {
                     source.sendMessage(
                         mm.parse(config.getString("messages.client-command"), templates));
-                    return 1;
                 }
+                return 1;
             })
             .build();
 

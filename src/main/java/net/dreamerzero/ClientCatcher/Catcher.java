@@ -14,15 +14,21 @@ import net.dreamerzero.clientcatcher.config.Configuration;
 import net.dreamerzero.clientcatcher.listener.ConnectListener;
 import net.dreamerzero.clientcatcher.utils.Constants;
 
-@Plugin(id = "clientcatcher", name = Constants.NAME, version = Constants.VERSION, description = Constants.DESCRIPTION, authors = {"4drian3d"})
+@Plugin(
+    id = "clientcatcher",
+    name = Constants.NAME,
+    version = Constants.VERSION,
+    description = Constants.DESCRIPTION,
+    url = Constants.URL,
+    authors = {"4drian3d"})
 public class Catcher {
-    private final ProxyServer server;
+    private static ProxyServer proxy;
     private final Logger logger;
     private Yaml config;
 
     @Inject
     public Catcher(final ProxyServer server, final Logger logger) {
-        this.server = server;
+        proxy = server;
         this.logger = logger;
         this.config = new Yaml("config", "plugins/ClientCatcher");
     }
@@ -34,8 +40,12 @@ public class Catcher {
         // Default config
         Configuration.setDefaultConfig(config);
         // Register the PostLogin listener
-        server.getEventManager().register(this, new ConnectListener(server, this, config));
+        proxy.getEventManager().register(this, new ConnectListener(proxy, this, config));
         // Register the "/client" command
-        ClientBrigadier.registerBrigadierCommand(server, config);
+        ClientBrigadier.registerBrigadierCommand(proxy, config);
+    }
+
+    public static ProxyServer getProxy(){
+        return proxy;
     }
 }
