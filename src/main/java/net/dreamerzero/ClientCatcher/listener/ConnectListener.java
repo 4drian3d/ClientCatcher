@@ -72,7 +72,7 @@ public class ConnectListener {
             templates.add(Template.of("client", playerClient));
 
             if(config.getStringList("settings.blocked-clients")
-                .stream().anyMatch(blockedClient -> playerClient.contains(blockedClient))){
+                .stream().anyMatch(playerClient::contains)){
                 player.disconnect(mm.parse(
                         config.getString("messages.client-disconnect-message"), templates));
                     return;
