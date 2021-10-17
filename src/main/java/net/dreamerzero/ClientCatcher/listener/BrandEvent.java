@@ -12,6 +12,5 @@ public class BrandEvent {
         Player player = event.getPlayer();
         ModdedClient mclient = ModdedClient.getModdedClient(player.getUniqueId());
         mclient.setClient(event.getBrand());
-
     }
 }

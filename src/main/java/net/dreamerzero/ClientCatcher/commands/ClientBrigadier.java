@@ -83,7 +83,6 @@ public class ClientBrigadier {
         clientCommand.addChild(playerArgument);
 
         BrigadierCommand bCommand = new BrigadierCommand(clientCommand);
-
         CommandMeta meta = server.getCommandManager().metaBuilder(bCommand).aliases("vclient","cliente").build();
 
         server.getCommandManager().register(meta, bCommand);
