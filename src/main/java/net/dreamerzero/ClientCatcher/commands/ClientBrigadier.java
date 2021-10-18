@@ -21,6 +21,7 @@ import net.dreamerzero.clientcatcher.ModdedClient;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.Template;
+import net.kyori.adventure.text.minimessage.template.TemplateResolver;
 
 public class ClientBrigadier {
     public static void registerBrigadierCommand(ProxyServer server, Yaml config){
@@ -47,12 +48,12 @@ public class ClientBrigadier {
                 Optional<Player> optionalPlayer = server.getPlayer(arg.getArgument("player", String.class));
 
                 List<Template> templates = new ArrayList<>();
-                templates.add(Template.of("newline", Component.newline()));
+                templates.add(Template.template("newline", Component.newline()));
 
                 if(optionalPlayer.isEmpty()) {
-                    templates.add(Template.of("name", arg.getArgument("player", String.class)));
+                    templates.add(Template.template("name", arg.getArgument("player", String.class)));
                     source.sendMessage(
-                        mm.parse(config.getString("messages.unknown-player"), templates));
+                        mm.deserialize(config.getString("messages.unknown-player"), TemplateResolver.templates(templates)));
                     return 1;
                 }
 
@@ -60,21 +61,21 @@ public class ClientBrigadier {
 
                 ModdedClient mClient = ModdedClient.getModdedClient(player.getUniqueId());
 
-                templates.add(Template.of("client", mClient.getClient().isPresent() ? mClient.getClient().get() : "Client not avialable"));
-                templates.add(Template.of("player", player.getUsername()));
+                templates.add(Template.template("client", mClient.getClient().isPresent() ? mClient.getClient().get() : "Client not avialable"));
+                templates.add(Template.template("player", player.getUsername()));
 
                 if(mClient.hasMods()) {
                     StringBuilder builder = new StringBuilder();
                     for(Mod mod : mClient.getModList()){
                         builder = builder.append("["+mod.getId()+"] ");
                     }
-                    templates.add(Template.of("mods", builder.toString()));
+                    templates.add(Template.template("mods", builder.toString()));
 
                     source.sendMessage(
-                        mm.parse(config.getString("messages.client-with-mods-command"), templates));
+                        mm.deserialize(config.getString("messages.client-with-mods-command"), TemplateResolver.templates(templates)));
                 } else {
                     source.sendMessage(
-                        mm.parse(config.getString("messages.client-command"), templates));
+                        mm.deserialize(config.getString("messages.client-command"), TemplateResolver.templates(templates)));
                 }
                 return 1;
             })

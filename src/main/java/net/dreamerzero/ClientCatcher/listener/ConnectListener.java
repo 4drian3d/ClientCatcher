@@ -20,6 +20,7 @@ import net.dreamerzero.clientcatcher.ModdedClient;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.Template;
+import net.kyori.adventure.text.minimessage.template.TemplateResolver;
 
 public class ConnectListener {
     private final ProxyServer server;
@@ -48,17 +49,17 @@ public class ConnectListener {
         // so you should wait a few seconds before trying to get it.
         server.getScheduler().buildTask(plugin, () -> {
             List<Template> templates = List.of(
-                Template.of("player", mclient.username()),
-                Template.of("newline", newline()));
+                Template.template("player", mclient.username()),
+                Template.template("newline", newline()));
 
             Optional<String> client = mclient.getClient();
             Audience cSource = server.getConsoleCommandSource();
 
             if (client.isEmpty()){
                 if(config.getBoolean("settings.show-null-client-message")) {
-                    cSource.sendMessage(mm.parse(
+                    cSource.sendMessage(mm.deserialize(
                         config.getString("messages.null-client"),
-                        templates));
+                        TemplateResolver.templates(templates)));
                 }
                 return;
             }
@@ -69,12 +70,12 @@ public class ConnectListener {
             ops.add(cSource);
 
             String playerClient = client.get();
-            templates.add(Template.of("client", playerClient));
+            templates.add(Template.template("client", playerClient));
 
             if(config.getStringList("settings.blocked-clients")
                 .stream().anyMatch(playerClient::contains)){
-                player.disconnect(mm.parse(
-                        config.getString("messages.client-disconnect-message"), templates));
+                player.disconnect(mm.deserialize(
+                        config.getString("messages.client-disconnect-message"), TemplateResolver.templates(templates)));
                     return;
             }
 
@@ -84,23 +85,23 @@ public class ConnectListener {
                 .anyMatch(mod -> config.getStringList("settings.blocked-mods")
                 .contains(mod.getId()))){
 
-                    player.disconnect(mm.parse(
-                        config.getString("messages.mods-disconnect-message"), templates));
+                    player.disconnect(mm.deserialize(
+                        config.getString("messages.mods-disconnect-message"), TemplateResolver.templates(templates)));
                     return;
                 }
-                templates.add(Template.of("mods", modList.toString()));
+                templates.add(Template.template("mods", modList.toString()));
                 if(broadcastToOp){
-                    Audience.audience(ops).sendMessage(mm.parse(
+                    Audience.audience(ops).sendMessage(mm.deserialize(
                         config.getString("messages.client-with-mods-alert-message"),
-                        templates));
+                        TemplateResolver.templates(templates)));
                     return;
                 }
             }
 
             if(broadcastToOp){
-                Audience.audience(ops).sendMessage(mm.parse(
+                Audience.audience(ops).sendMessage(mm.deserialize(
                     config.getString("messages.client-alert-message"),
-                    templates));
+                    TemplateResolver.templates(templates)));
             }
         })
         .delay(delay, TimeUnit.SECONDS)
