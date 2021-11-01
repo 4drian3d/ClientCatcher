@@ -7,6 +7,7 @@ plugins {
 }
 
 repositories {
+    mavenCentral()
     maven {
         name = "Velocity Repository"
         url = uri("https://nexus.velocitypowered.com/repository/maven-public/")

@@ -9,8 +9,8 @@ import net.dreamerzero.clientcatcher.ModdedClient;
 public class ModListener {
     @Subscribe
     public void onModInfo(PlayerModInfoEvent event){
-        Player player = event.getPlayer();
-        ModdedClient mclient = ModdedClient.getModdedClient(player.getUniqueId());
+        final Player player = event.getPlayer();
+        final ModdedClient mclient = ModdedClient.getModdedClient(player.getUniqueId());
         mclient.setMods(event.getModInfo());
     }
 }

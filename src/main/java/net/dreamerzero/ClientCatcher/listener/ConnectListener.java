@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import com.velocitypowered.api.event.PostOrder;
 import com.velocitypowered.api.event.Subscribe;
@@ -40,7 +41,7 @@ public class ConnectListener {
     @Subscribe(order = PostOrder.LATE)
     public void onPlayerConnect(ServerPostConnectEvent event) {
         if(event.getPreviousServer() != null) return;
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
         ModdedClient mclient = ModdedClient.getModdedClient(player.getUniqueId());
         broadcastToOp = config.getBoolean("settings.broadcast-alert-to-op");
         delay = config.getLong("settings.check-delay");
@@ -48,12 +49,12 @@ public class ConnectListener {
         // The client sends the client brand seconds after logging in,
         // so you should wait a few seconds before trying to get it.
         server.getScheduler().buildTask(plugin, () -> {
-            List<Template> templates = List.of(
-                Template.template("player", mclient.username()),
-                Template.template("newline", newline()));
+            List<Template> templates = new ArrayList<>();
+            templates.add(Template.template("player", mclient.username()));
+            templates.add(Template.template("newline", newline()));
 
             Optional<String> client = mclient.getClient();
-            Audience cSource = server.getConsoleCommandSource();
+            final Audience cSource = server.getConsoleCommandSource();
 
             if (client.isEmpty()){
                 if(config.getBoolean("settings.show-null-client-message")) {
@@ -63,27 +64,26 @@ public class ConnectListener {
                 }
                 return;
             }
-
-            ArrayList<Audience> ops = new ArrayList<>();
-            server.getAllPlayers().stream().filter(
-                user -> user.hasPermission("clientcatcher.notifications")).forEach(ops::add);
-            ops.add(cSource);
+            List<Audience> oplist = server.getAllPlayers().stream()
+                .filter(user -> user.hasPermission("clientcatcher.notifications"))
+                .collect(Collectors.toList());
+            oplist.add(cSource);
+            final Audience ops = Audience.audience(oplist);
 
             String playerClient = client.get();
             templates.add(Template.template("client", playerClient));
 
-            if(config.getStringList("settings.blocked-clients")
-                .stream().anyMatch(playerClient::contains)){
+            if(config.getStringList("settings.blocked-clients").stream().anyMatch(playerClient::contains)){
                 player.disconnect(mm.deserialize(
-                        config.getString("messages.client-disconnect-message"), TemplateResolver.templates(templates)));
-                    return;
+                    config.getString("messages.client-disconnect-message"),
+                    TemplateResolver.templates(templates)));
+                return;
             }
 
             if(mclient.getMods().isPresent()){
                 List<Mod> modList = mclient.getMods().get().getMods();
                 if(modList.stream()
-                .anyMatch(mod -> config.getStringList("settings.blocked-mods")
-                .contains(mod.getId()))){
+                    .anyMatch(mod -> config.getStringList("settings.blocked-mods").contains(mod.getId()))){
 
                     player.disconnect(mm.deserialize(
                         config.getString("messages.mods-disconnect-message"), TemplateResolver.templates(templates)));
@@ -91,7 +91,7 @@ public class ConnectListener {
                 }
                 templates.add(Template.template("mods", modList.toString()));
                 if(broadcastToOp){
-                    Audience.audience(ops).sendMessage(mm.deserialize(
+                    ops.sendMessage(mm.deserialize(
                         config.getString("messages.client-with-mods-alert-message"),
                         TemplateResolver.templates(templates)));
                     return;
@@ -99,7 +99,7 @@ public class ConnectListener {
             }
 
             if(broadcastToOp){
-                Audience.audience(ops).sendMessage(mm.deserialize(
+                ops.sendMessage(mm.deserialize(
                     config.getString("messages.client-alert-message"),
                     TemplateResolver.templates(templates)));
             }

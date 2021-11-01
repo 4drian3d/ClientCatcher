@@ -25,13 +25,13 @@ import net.kyori.adventure.text.minimessage.template.TemplateResolver;
 
 public class ClientBrigadier {
     public static void registerBrigadierCommand(ProxyServer server, Yaml config){
-        MiniMessage mm = MiniMessage.miniMessage();
+        final MiniMessage mm = MiniMessage.miniMessage();
         // return 1 == yes | return 0 == false
         LiteralCommandNode<CommandSource> clientCommand = LiteralArgumentBuilder
             .<CommandSource>literal("client")
             .executes(cmd -> {
                     if(!cmd.getSource().hasPermission("clientcatcher.command")) return 0;
-                    cmd.getSource().sendMessage(mm.parse(config.getString("messages.usage")));
+                    cmd.getSource().sendMessage(mm.deserialize(config.getString("messages.usage")));
                     return 1;
                 }
             ).build();
@@ -57,7 +57,7 @@ public class ClientBrigadier {
                     return 1;
                 }
 
-                Player player = optionalPlayer.get();
+                final Player player = optionalPlayer.get();
 
                 ModdedClient mClient = ModdedClient.getModdedClient(player.getUniqueId());
 

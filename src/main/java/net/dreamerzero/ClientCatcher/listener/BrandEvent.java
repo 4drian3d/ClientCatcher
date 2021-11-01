@@ -9,8 +9,8 @@ import net.dreamerzero.clientcatcher.ModdedClient;
 public class BrandEvent {
     @Subscribe
     public void onClientBrand(PlayerClientBrandEvent event){
-        Player player = event.getPlayer();
-        ModdedClient mclient = ModdedClient.getModdedClient(player.getUniqueId());
+        final Player player = event.getPlayer();
+        final ModdedClient mclient = ModdedClient.getModdedClient(player.getUniqueId());
         mclient.setClient(event.getBrand());
     }
 }
