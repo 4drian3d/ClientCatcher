@@ -10,6 +10,9 @@ repositories {
 
 dependencies {
     compileOnly(kotlin("stdlib"))
-    compileOnly("com.velocitypowered:velocity-api:3.2.0-SNAPSHOT")
-    kapt("com.velocitypowered:velocity-api:3.2.0-SNAPSHOT")
+    compileOnly(libs.velocity)
+    kapt(libs.velocity)
+    implementation(projects.clientcatcherCommon)
+    compileOnly(libs.caffeine)
+    implementation(libs.configurate)
 }
