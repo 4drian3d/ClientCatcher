@@ -8,16 +8,23 @@ import me.adrianed.clientcatcher.velocity.asMiniMessage
 import me.adrianed.clientcatcher.velocity.event.BlockedClientEvent
 import me.adrianed.clientcatcher.velocity.objects.CatcherCommandSource
 import net.kyori.adventure.permission.PermissionChecker
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 
 class BrandListener(private val plugin: ClientCatcher) {
     @Subscribe
     fun onBrand(event: PlayerClientBrandEvent, continuation: Continuation) {
+        val resolver = with(TagResolver.builder()) {
+            resolver(Placeholder.unparsed("player", event.player.username))
+            resolver(Placeholder.unparsed("client", event.brand))
+        }.build()
+
         plugin.proxyServer
             .filterAudience {
-                it.get(PermissionChecker.POINTER).map {
-                        pointer -> pointer.test("clientcatcher.alert.client")
+                it.get(PermissionChecker.POINTER).map { pointer ->
+                    pointer.test("clientcatcher.alert.client")
                 }.orElse(false)
-            }.sendMessage(plugin.messages.alert.client.asMiniMessage())
+            }.sendMessage(plugin.messages.alert.client.asMiniMessage(resolver))
 
         for (client in plugin.configuration.blocked.clients) {
             if (event.brand == client.key) {

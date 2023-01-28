@@ -8,16 +8,27 @@ import me.adrianed.clientcatcher.velocity.asMiniMessage
 import me.adrianed.clientcatcher.velocity.event.BlockedModEvent
 import me.adrianed.clientcatcher.velocity.objects.CatcherCommandSource
 import net.kyori.adventure.permission.PermissionChecker
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 
 class ModListener(private val plugin: ClientCatcher) {
     @Subscribe
     fun onBrand(event: PlayerModInfoEvent, continuation: Continuation) {
+        val resolver = with(TagResolver.builder()) {
+            resolver(Placeholder.unparsed("player", event.player.username))
+            resolver(
+                Placeholder.unparsed("mods",
+                    event.modInfo.mods.joinToString(", ") { "${it.id}:${it.version}" })
+            )
+        }.build()
+
+
         plugin.proxyServer
             .filterAudience {
-                it.get(PermissionChecker.POINTER).map {
-                        pointer -> pointer.test("clientcatcher.alert.mods")
+                it.get(PermissionChecker.POINTER).map { pointer ->
+                    pointer.test("clientcatcher.alert.mods")
                 }.orElse(false)
-            }.sendMessage(plugin.messages.alert.mods.asMiniMessage())
+            }.sendMessage(plugin.messages.alert.mods.asMiniMessage(resolver))
 
         for (mod in event.modInfo.mods) {
             for (blocked in plugin.configuration.blocked.mods) {

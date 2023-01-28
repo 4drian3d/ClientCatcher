@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import com.velocitypowered.api.command.CommandManager
 import com.velocitypowered.api.event.EventManager
 import com.velocitypowered.api.event.Subscribe
+import com.velocitypowered.api.event.proxy.ProxyInitializeEvent
 import com.velocitypowered.api.plugin.Plugin
 import com.velocitypowered.api.plugin.annotation.DataDirectory
 import com.velocitypowered.api.proxy.ProxyServer
@@ -26,7 +27,7 @@ import java.util.concurrent.CompletableFuture
 )
 class ClientCatcher @Inject constructor(
     val proxyServer: ProxyServer,
-    @DataDirectory val path: Path,
+    @DataDirectory private val path: Path,
     private val logger: Logger,
     val commandManager: CommandManager,
     val eventManager: EventManager
@@ -37,7 +38,7 @@ class ClientCatcher @Inject constructor(
         private set
 
     @Subscribe
-    fun onProxyInitialization() {
+    fun onProxyInitialization(event: ProxyInitializeEvent) {
         if (!loadConfig().join()) {
             return
         }

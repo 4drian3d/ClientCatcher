@@ -9,6 +9,7 @@ import com.velocitypowered.api.command.CommandManager
 import com.velocitypowered.api.command.CommandSource
 import me.adrianed.clientcatcher.velocity.ClientCatcher
 import me.adrianed.clientcatcher.velocity.asMiniMessage
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 
 fun register(manager: CommandManager, plugin: ClientCatcher) {
     val command = BrigadierCommand(literal<CommandSource>("clientcatcher")
@@ -23,16 +24,30 @@ fun register(manager: CommandManager, plugin: ClientCatcher) {
         )
         .then(literal<CommandSource>("client")
             .then(playerArgument()
-                .executes {
-                    plugin.proxyServer.getPlayer(getString(it, "player"))
+                .executes { ctx ->
+                    val name = getString(ctx, "player")
+                    plugin.proxyServer.getPlayer(name)
                         .ifPresentOrElse({ player ->
-                            if (player.modInfo.isPresent) {
-                                it.source.sendMessage(plugin.messages.command.client.withMods.asMiniMessage())
-                            } else {
-                                it.source.sendMessage(plugin.messages.command.client.client.asMiniMessage())
-                            }
+                            ctx.source.sendMessage(
+                                with(plugin.messages.command) {
+                                    if (player.modInfo.isPresent) client.withMods.asMiniMessage(
+                                        Placeholder.unparsed("player", player.username),
+                                        Placeholder.unparsed("client", player.clientBrand ?: "UNKNOWN"),
+                                        Placeholder.unparsed("mods",
+                                            player.modInfo.get().mods.joinToString(", ") { "${it.id}:${it.version}" })
+                                    )
+                                    else client.client.asMiniMessage(
+                                        Placeholder.unparsed("player", player.username),
+                                        Placeholder.unparsed("client", player.clientBrand ?: "UNKNOWN")
+                                    )
+                                }
+                            )
                         }, {
-                            it.source.sendMessage(plugin.messages.command.unknownPlayer.asMiniMessage())
+                            ctx.source.sendMessage(
+                                plugin.messages.command.unknownPlayer.asMiniMessage(
+                                    Placeholder.unparsed("name", name)
+                                )
+                            )
                         })
                     Command.SINGLE_SUCCESS
                 }
@@ -40,16 +55,32 @@ fun register(manager: CommandManager, plugin: ClientCatcher) {
         )
         .then(literal<CommandSource>("mod")
             .then(playerArgument()
-                .executes {
-                    plugin.proxyServer.getPlayer(getString(it, "player"))
+                .executes { ctx ->
+                    val name = getString(ctx, "player")
+                    plugin.proxyServer.getPlayer(name)
                         .ifPresentOrElse({ player ->
-                            if (player.modInfo.isPresent) {
-                                it.source.sendMessage(plugin.messages.command.mods.modsFound.asMiniMessage())
-                            } else {
-                                it.source.sendMessage(plugin.messages.command.mods.notModsFound.asMiniMessage())
-                            }
+                            ctx.source.sendMessage(
+                                with(plugin.messages.command.mods) {
+                                    if (player.modInfo.isPresent) modsFound.asMiniMessage(
+                                        Placeholder.unparsed("player", player.username),
+                                        Placeholder.unparsed("mods",
+                                            player.modInfo.get().mods.joinToString(", ") { "${it.id}:${it.version}" })
+                                    )
+                                    else notModsFound.asMiniMessage(
+                                        Placeholder.unparsed(
+                                            "player",
+                                            player.username
+                                        )
+                                    )
+                                }
+                            )
+
                         }, {
-                            it.source.sendMessage(plugin.messages.command.unknownPlayer.asMiniMessage())
+                            ctx.source.sendMessage(
+                                plugin.messages.command.unknownPlayer.asMiniMessage(
+                                    Placeholder.unparsed("name", name)
+                                )
+                            )
                         })
                     Command.SINGLE_SUCCESS
                 }
