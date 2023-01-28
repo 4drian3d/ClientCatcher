@@ -1,0 +1,7 @@
+package me.adrianed.clientcatcher.velocity
+
+import net.kyori.adventure.text.minimessage.MiniMessage
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
+
+fun String.asMiniMessage() = MiniMessage.miniMessage().deserialize(this)
+fun String.asMiniMessage(resolver: TagResolver) = MiniMessage.miniMessage().deserialize(this, resolver)
