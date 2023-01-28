@@ -5,6 +5,7 @@ import com.velocitypowered.api.command.CommandManager
 import com.velocitypowered.api.event.EventManager
 import com.velocitypowered.api.event.Subscribe
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent
+import com.velocitypowered.api.plugin.Dependency
 import com.velocitypowered.api.plugin.Plugin
 import com.velocitypowered.api.plugin.annotation.DataDirectory
 import com.velocitypowered.api.proxy.ProxyServer
@@ -23,7 +24,8 @@ import java.util.concurrent.CompletableFuture
     id = "clientcatcher",
     name = "ClientCatcher",
     version = Constants.VERSION,
-    authors = ["4drian3d"]
+    authors = ["4drian3d"],
+    dependencies = [Dependency(id = "mckotlin-velocity")]
 )
 class ClientCatcher @Inject constructor(
     val proxyServer: ProxyServer,
