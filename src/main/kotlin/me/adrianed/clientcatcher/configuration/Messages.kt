@@ -1,4 +1,4 @@
-package me.adrianed.clientcatcher.velocity.configuration
+package me.adrianed.clientcatcher.configuration
 
 import org.spongepowered.configurate.objectmapping.ConfigSerializable
 import org.spongepowered.configurate.objectmapping.meta.Comment
@@ -14,7 +14,7 @@ class Messages {
     @ConfigSerializable
     class Command {
         @Comment("Main Command usage")
-        var usage = "<gradient:red:white>ClientCatcher <gray>| <red>Usage: <white>/client <aqua><player>"
+        var usage = "<gradient:red:white>ClientCatcher <gray>| <red>Usage: <white>/clientcatcher <client/mods/reload> <aqua><player>"
         var unknownPlayer = "<gray><name> <red>is not a player or is not online"
         var client = Client()
         var mods = Mods()

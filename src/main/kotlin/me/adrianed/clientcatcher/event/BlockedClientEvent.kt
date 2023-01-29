@@ -1,4 +1,4 @@
-package me.adrianed.clientcatcher.velocity.event
+package me.adrianed.clientcatcher.event
 
 import com.velocitypowered.api.proxy.Player
 

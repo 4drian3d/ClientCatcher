@@ -11,7 +11,11 @@ blossom = "1.3.1"
 shadow = "7.1.2"
 runvelocity = "2.0.1"
 
+# Required by Configurate 4
+geantyref = "1.3.13"
+
 configurate = "4.1.2"
+libby = "43d25ade72"
 
 [libraries]
 
@@ -20,6 +24,7 @@ velocity = { group = "com.velocitypowered", name = "velocity-api", version.ref =
 bstats = { module = "org.bstats:bstats-velocity", version.ref = "bstats" }
 caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version.ref = "caffeine" }
 configurate = { module = "org.spongepowered:configurate-hocon", version.ref = "configurate" }
+libby = { group = "com.github.AlessioDP.libby", name = "libby-velocity", version.ref = "libby" }
 
 [plugins]
 

@@ -1,4 +1,4 @@
-package me.adrianed.clientcatcher.velocity.objects
+package me.adrianed.clientcatcher.objects
 
 import com.velocitypowered.api.command.CommandSource
 import com.velocitypowered.api.permission.Tristate

@@ -1,4 +1,4 @@
-package me.adrianed.clientcatcher.velocity
+package me.adrianed.clientcatcher
 
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver

@@ -1,12 +1,12 @@
-package me.adrianed.clientcatcher.velocity.listener
+package me.adrianed.clientcatcher.listener
 
 import com.velocitypowered.api.event.Continuation
 import com.velocitypowered.api.event.Subscribe
 import com.velocitypowered.api.event.player.PlayerModInfoEvent
-import me.adrianed.clientcatcher.velocity.ClientCatcher
-import me.adrianed.clientcatcher.velocity.asMiniMessage
-import me.adrianed.clientcatcher.velocity.event.BlockedModEvent
-import me.adrianed.clientcatcher.velocity.objects.CatcherCommandSource
+import me.adrianed.clientcatcher.ClientCatcher
+import me.adrianed.clientcatcher.asMiniMessage
+import me.adrianed.clientcatcher.event.BlockedModEvent
+import me.adrianed.clientcatcher.objects.CatcherCommandSource
 import net.kyori.adventure.permission.PermissionChecker
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver

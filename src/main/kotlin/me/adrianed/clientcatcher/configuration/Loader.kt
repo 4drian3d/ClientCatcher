@@ -1,4 +1,4 @@
-package me.adrianed.clientcatcher.velocity.configuration
+package me.adrianed.clientcatcher.configuration
 
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader
 import java.nio.file.Path
