@@ -14,7 +14,7 @@ class Messages {
     @ConfigSerializable
     class Command {
         @Comment("Main Command usage")
-        var usage = "<gradient:red:white>ClientCatcher <gray>| <red>Usage: <white>/clientcatcher <client/mods/reload> <aqua><player>"
+        var usage = "<gradient:#E7A977:#EBBE9B>ClientCatcher</gradient> <dark_gray>| <red>Usage: <gray>/clientcatcher <white><client/mods/reload> <aqua><player>"
         @Comment(
             "Message to send if the name entered in the '/clientcatcher <client/mods> <player>' commands"
             + "\n does not correspond to an online player\n"
@@ -38,7 +38,7 @@ class Messages {
                 + "- <mods>\n"
                 + "  | The player's mods"
             )
-            var withMods = "<red>Client of</red> <aqua><player></aqua><gray>: <gold><client><newline><red>Mods of the client: <aqua><mods>"
+            var withMods = "<red>Client of</red> <aqua><player></aqua><gray>: <gray><client><newline><red>Mods: <gray><mods>"
             @Comment(
                 "Message to be sent to check the player's client\n"
                 + "Placeholders Available:\n"
@@ -47,7 +47,7 @@ class Messages {
                 + "- <client>\n"
                 + "  | The player's client"
             )
-            var client = "<red>Client of</red> <aqua><player></aqua><gray>: <gold><client>"
+            var client = "<red>Client of</red> <aqua><player></aqua><gray>: <gray><client>"
         }
 
         @ConfigSerializable
@@ -60,7 +60,7 @@ class Messages {
                 + "- <mods>\n"
                 + "  | The player's mods"
             )
-            var found = "<aqua>Player <gray><player></gray> has the mods: <mods>"
+            var found = "<aqua>Player <gray><player></gray> has the mods: <gray><mods>"
             @Comment(
                 "Message to send in case the player has no mods installed"
                 + "Placeholders Available\n:"
@@ -90,12 +90,12 @@ class Messages {
             + "- <mods>\n"
             + "  | The player´s mods"
         )
-        var mods = "<aqua><player> <red>has joined with mods: <aqua><mods>"
+        var mods = "<aqua><player> <red>has joined with mods: <gray><mods>"
     }
 
     @ConfigSerializable
     class Reload {
-        var successfully = "<gradient:red:white>ClientCatcher</gradient> <green>Has been successfully reloaded"
-        var error = "<gradient:red:white>ClientCatcher</gradient> An error occurred in config reloading"
+        var successfully = "<gradient:#E7A977:#EBBE9B>ClientCatcher</gradient> <green>Has been successfully reloaded"
+        var error = "<gradient:#E7A977:#EBBE9B>ClientCatcher</gradient> <red>An error occurred in config reloading"
     }
 }
