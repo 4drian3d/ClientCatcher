@@ -23,7 +23,8 @@ libby = "43d25ade72"
 velocity = { group = "com.velocitypowered", name = "velocity-api", version.ref = "velocity" }
 bstats = { module = "org.bstats:bstats-velocity", version.ref = "bstats" }
 caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version.ref = "caffeine" }
-configurate = { module = "org.spongepowered:configurate-hocon", version.ref = "configurate" }
+configurate-hocon = { module = "org.spongepowered:configurate-hocon", version.ref = "configurate" }
+configurate-kotlin = { module = "org.spongepowered:configurate-extra-kotlin", version.ref = "configurate" }
 libby = { group = "com.github.AlessioDP.libby", name = "libby-velocity", version.ref = "libby" }
 
 [plugins]

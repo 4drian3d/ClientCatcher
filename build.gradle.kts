@@ -25,7 +25,8 @@ dependencies {
     compileOnly(libs.velocity)
     kapt(libs.velocity)
     compileOnly(libs.caffeine)
-    compileOnly(libs.configurate)
+    compileOnly(libs.configurate.hocon)
+    compileOnly(libs.configurate.kotlin)
     implementation(libs.libby)
 }
 

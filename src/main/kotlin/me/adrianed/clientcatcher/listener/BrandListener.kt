@@ -27,9 +27,12 @@ class BrandListener(private val plugin: ClientCatcher) {
             }.sendMessage(plugin.messages.alert.client.asMiniMessage(resolver))
 
         for (client in plugin.configuration.blocked.clients) {
-            if (event.brand == client.key) {
-                for (command in client.value) {
-                    plugin.commandManager.executeAsync(CatcherCommandSource, command)
+            if (event.brand.equals(client.name, ignoreCase = true)) {
+                for (command in client.commands) {
+                    plugin.commandManager.executeAsync(CatcherCommandSource, command
+                        .replace("<player>", event.player.username)
+                        .replace("<client>", event.brand)
+                    )
                     plugin.eventManager.fireAndForget(BlockedClientEvent(command, event.player))
                     continuation.resume()
                     return
