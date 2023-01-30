@@ -71,12 +71,12 @@ fun register(manager: CommandManager, plugin: ClientCatcher) {
                         .ifPresentOrElse({ player ->
                             ctx.source.sendMessage(
                                 with(plugin.messages.command.mods) {
-                                    if (player.modInfo.isPresent) modsFound.asMiniMessage(
+                                    if (player.modInfo.isPresent) found.asMiniMessage(
                                         Placeholder.unparsed("player", player.username),
                                         Placeholder.unparsed("mods",
                                             player.modInfo.get().mods.joinToString(", ") { "${it.id}:${it.version}" })
                                     )
-                                    else notModsFound.asMiniMessage(
+                                    else notFound.asMiniMessage(
                                         Placeholder.unparsed(
                                             "player",
                                             player.username

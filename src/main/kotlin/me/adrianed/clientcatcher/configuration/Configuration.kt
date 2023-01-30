@@ -6,13 +6,20 @@ import org.spongepowered.configurate.objectmapping.meta.Comment
 @ConfigSerializable
 class Configuration {
     @Comment(
-        ""
+        "Configuration of blocked clients/mods"
+        + "\nFor moderation commands, I recommend you to use LibertyBans"
     )
     var blocked = Blocked()
     @ConfigSerializable
     class Blocked {
         @Comment(
-            ""
+            "Here you can configure the mods to detect and the commands\n"
+            + "to execute when a mod is detected\n"
+            + "Placeholders Available in Commands:\n"
+            + "- <player>\n"
+            + "  | The player's name\n"
+            + "- <mod>\n"
+            + "  | The detected mod"
         )
         var mods = setOf(
             BlockedElement().also {
@@ -36,7 +43,13 @@ class Configuration {
         )
 
         @Comment(
-            ""
+            "Configures the clients to be detected and the commands\n"
+            + "to be executed when the specific client is detected\n"
+            + "Placeholders Available in Commands:\n"
+            + "- <player>\n"
+            + "  | The player's name\n"
+            + "- <client>\n"
+            + "  | The player´s client"
         )
         var clients = setOf(
             BlockedElement().also {
