@@ -7,7 +7,12 @@ import java.nio.file.Path
 import net.byteflux.libby.VelocityLibraryManager
 import net.byteflux.libby.relocation.Relocation
 
-fun loadDependencies(plugin: ClientCatcher, logger: Logger, manager: PluginManager, path: Path) {
+fun loadDependencies(
+    plugin: ClientCatcher,
+    logger: Logger,
+    manager: PluginManager,
+    path: Path
+) {
     val libraryManager = VelocityLibraryManager(logger, path, manager, plugin, "libs")
     val configurateRelocation = Relocation(
         "org{}spongepowered",
@@ -48,6 +53,7 @@ fun loadDependencies(plugin: ClientCatcher, logger: Logger, manager: PluginManag
         .id("geantyref")
         .relocate(geantyrefRelocation)
         .build()
+
     libraryManager.addMavenCentral()
     libraryManager.loadLibrary(geantyref)
     libraryManager.loadLibrary(confCore)

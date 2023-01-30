@@ -29,12 +29,12 @@ import java.util.concurrent.CompletableFuture
     dependencies = [Dependency(id = "mckotlin-velocity")]
 )
 class ClientCatcher @Inject constructor(
-    val proxyServer: ProxyServer,
     @DataDirectory private val path: Path,
+    private val pluginManager: PluginManager,
     private val logger: Logger,
+    val proxyServer: ProxyServer,
     val commandManager: CommandManager,
     val eventManager: EventManager,
-    private val pluginManager: PluginManager
 ) {
     lateinit var configuration: Configuration
         private set
@@ -45,13 +45,14 @@ class ClientCatcher @Inject constructor(
     fun onProxyInitialization(event: ProxyInitializeEvent) {
         loadDependencies(this, logger, pluginManager, path)
 
-        if (!loadConfig().join()) {
-            return
+        loadConfig().thenAcceptAsync {
+            if (it) {
+                register(commandManager, this)
+                eventManager.register(this, BrandListener(this))
+                eventManager.register(this, ModListener(this))
+                logger.info("Correctly loaded ClientCatcher")
+            }
         }
-
-        register(commandManager, this)
-        eventManager.register(this, BrandListener(this))
-        eventManager.register(this, ModListener(this))
     }
 
     fun loadConfig() = CompletableFuture.supplyAsync {
