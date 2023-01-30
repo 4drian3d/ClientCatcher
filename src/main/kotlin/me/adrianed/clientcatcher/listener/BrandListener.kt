@@ -28,15 +28,19 @@ class BrandListener(private val plugin: ClientCatcher) {
 
         for (client in plugin.configuration.blocked.clients) {
             if (event.brand.equals(client.name, ignoreCase = true)) {
-                for (command in client.commands) {
-                    plugin.commandManager.executeAsync(CatcherCommandSource, command
-                        .replace("<player>", event.player.username)
+                plugin.eventManager.fireAndForget(BlockedClientEvent(event.brand, event.player))
+
+                client.commands.map {
+                    it.replace("<player>", event.player.username)
                         .replace("<client>", event.brand)
+                }.forEach {
+                    plugin.commandManager.executeAsync(
+                        CatcherCommandSource, it
                     )
-                    plugin.eventManager.fireAndForget(BlockedClientEvent(command, event.player))
-                    continuation.resume()
-                    return
                 }
+
+                continuation.resume()
+                return
             }
         }
         continuation.resume()

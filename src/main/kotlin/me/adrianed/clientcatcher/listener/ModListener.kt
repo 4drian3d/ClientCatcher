@@ -30,18 +30,17 @@ class ModListener(private val plugin: ClientCatcher) {
                 }.orElse(false)
             }.sendMessage(plugin.messages.alert.mods.asMiniMessage(resolver))
 
-        for (mod in event.modInfo.mods) {
-            for (blocked in plugin.configuration.blocked.mods) {
-                if (blocked.name.equals(mod.id, ignoreCase = true)) {
-                    for (command in blocked.commands) {
-                        plugin.commandManager.executeAsync(CatcherCommandSource, command
-                            .replace("<player>", event.player.username)
-                            .replace("<mod>", mod.id))
-                        plugin.eventManager.fireAndForget(BlockedModEvent(mod, event.player))
-                        continuation.resume()
-                        return
-                    }
-                }
+        for (mod in event.modInfo.mods) for (blocked in plugin.configuration.blocked.mods) {
+            if (blocked.name.equals(mod.id, ignoreCase = true)) {
+                plugin.eventManager.fireAndForget(BlockedModEvent(mod, event.player))
+
+                blocked.commands.map {
+                    it.replace("<player>", event.player.username)
+                        .replace("<mod>", mod.id)
+                }.forEach { plugin.commandManager.executeAsync(CatcherCommandSource, it) }
+
+                continuation.resume()
+                return
             }
         }
         continuation.resume()
