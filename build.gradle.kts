@@ -18,6 +18,7 @@ repositories {
         }
     }
     mavenCentral()
+    maven("https://jitpack.io")
 }
 
 dependencies {
@@ -27,6 +28,7 @@ dependencies {
     compileOnly(libs.caffeine)
     compileOnly(libs.configurate.hocon)
     compileOnly(libs.configurate.kotlin)
+    compileOnly(libs.miniplaceholders)
     implementation(libs.libby)
     implementation(libs.bstats)
 }
@@ -49,6 +51,11 @@ tasks {
             "org.bstats"
         ).forEach {
             relocate(it, "me.adrianed.clientcatcher.libs.$it")
+        }
+    }
+    compileKotlin {
+        kotlinOptions {
+            languageVersion = "1.8"
         }
     }
 }

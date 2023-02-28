@@ -55,6 +55,9 @@ class ClientCatcher @Inject constructor(
                 logger.info("Correctly loaded ClientCatcher")
             }
         }.thenAcceptAsync {
+            if (pluginManager.isLoaded("miniplaceholders")) {
+                registerExpansion()
+            }
             metrics.make(this, 17830)
         }
     }
