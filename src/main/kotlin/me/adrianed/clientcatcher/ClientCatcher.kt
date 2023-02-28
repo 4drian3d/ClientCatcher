@@ -48,17 +48,16 @@ class ClientCatcher @Inject constructor(
         loadDependencies(this, logger, pluginManager, path)
 
         loadConfig().thenAcceptAsync {
-            if (it) {
+            if (!it) {
                 register(commandManager, this)
                 eventManager.register(this, BrandListener(this))
                 eventManager.register(this, ModListener(this))
                 logger.info("Correctly loaded ClientCatcher")
+                if (pluginManager.isLoaded("miniplaceholders")) {
+                    registerExpansion()
+                }
+                metrics.make(this, 17830)
             }
-        }.thenAcceptAsync {
-            if (pluginManager.isLoaded("miniplaceholders")) {
-                registerExpansion()
-            }
-            metrics.make(this, 17830)
         }
     }
 
