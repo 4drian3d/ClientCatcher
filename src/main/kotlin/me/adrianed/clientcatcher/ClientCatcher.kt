@@ -27,7 +27,10 @@ import java.util.concurrent.CompletableFuture
     name = "ClientCatcher",
     version = Constants.VERSION,
     authors = ["4drian3d"],
-    dependencies = [Dependency(id = "mckotlin-velocity")]
+    dependencies = [
+        Dependency(id = "mckotlin-velocity"),
+        Dependency(id = "miniplaceholders", optional = true)
+    ]
 )
 class ClientCatcher @Inject constructor(
     @DataDirectory private val path: Path,
