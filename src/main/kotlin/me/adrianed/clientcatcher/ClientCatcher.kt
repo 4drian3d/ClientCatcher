@@ -17,6 +17,7 @@ import me.adrianed.clientcatcher.configuration.Messages
 import me.adrianed.clientcatcher.configuration.load
 import me.adrianed.clientcatcher.listener.BrandListener
 import me.adrianed.clientcatcher.listener.ModListener
+import org.bstats.velocity.Metrics
 import org.slf4j.Logger
 import java.nio.file.Path
 import java.util.concurrent.CompletableFuture
@@ -32,6 +33,7 @@ class ClientCatcher @Inject constructor(
     @DataDirectory private val path: Path,
     private val pluginManager: PluginManager,
     private val logger: Logger,
+    private val metrics: Metrics.Factory,
     val proxyServer: ProxyServer,
     val commandManager: CommandManager,
     val eventManager: EventManager,
@@ -52,6 +54,8 @@ class ClientCatcher @Inject constructor(
                 eventManager.register(this, ModListener(this))
                 logger.info("Correctly loaded ClientCatcher")
             }
+        }.thenAcceptAsync {
+            metrics.make(this, 17830)
         }
     }
 

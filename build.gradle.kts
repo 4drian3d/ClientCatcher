@@ -28,6 +28,7 @@ dependencies {
     compileOnly(libs.configurate.hocon)
     compileOnly(libs.configurate.kotlin)
     implementation(libs.libby)
+    implementation(libs.bstats)
 }
 
 tasks {
