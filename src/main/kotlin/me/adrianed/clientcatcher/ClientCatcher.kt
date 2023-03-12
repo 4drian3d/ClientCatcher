@@ -57,7 +57,7 @@ class ClientCatcher @Inject constructor(
                 eventManager.register(this, ModListener(this))
                 logger.info("Correctly loaded ClientCatcher")
                 if (pluginManager.isLoaded("miniplaceholders")) {
-                    registerExpansion()
+                    registerExpansion(proxyServer)
                 }
                 metrics.make(this, 17830)
             }
