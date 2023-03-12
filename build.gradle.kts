@@ -7,28 +7,19 @@ plugins {
 }
 
 repositories {
-    maven("https://repo.papermc.io/repository/maven-public/") {
-        content {
-            includeGroup("com.velocitypowered")
-        }
-    }
-    maven("https://jitpack.io") {
-        content {
-            includeGroup("com.github.AlessioDP.libby")
-        }
-    }
-    mavenCentral()
-    maven("https://jitpack.io")
+    maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://repo.alessiodp.com/releases/")
 }
 
 dependencies {
     compileOnly(kotlin("stdlib"))
     compileOnly(libs.velocity)
     kapt(libs.velocity)
-    compileOnly(libs.caffeine)
     compileOnly(libs.configurate.hocon)
     compileOnly(libs.configurate.kotlin)
-    compileOnly(libs.miniplaceholders)
+    compileOnly(libs.miniplaceholders.api)
+    compileOnly(libs.miniplaceholders.kotlin)
+
     implementation(libs.libby)
     implementation(libs.bstats)
 }
@@ -69,7 +60,7 @@ blossom {
 
 kotlin {
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 
