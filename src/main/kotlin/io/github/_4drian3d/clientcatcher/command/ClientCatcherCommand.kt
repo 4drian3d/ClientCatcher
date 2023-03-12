@@ -36,29 +36,28 @@ fun register(manager: CommandManager, plugin: ClientCatcher) {
                 playerArgument()
                 .executes { ctx ->
                     val name = getString(ctx, "player")
-                    plugin.proxyServer.getPlayer(name)
-                        .ifPresentOrElse({ player ->
-                            ctx.source.sendMessage(
-                                with(plugin.messages.command) {
-                                    if (player.modInfo.isPresent) client.withMods.asMiniMessage(
-                                        Placeholder.unparsed("player", player.username),
-                                        Placeholder.unparsed("client", player.clientBrand ?: "UNKNOWN"),
-                                        Placeholder.unparsed("mods",
-                                            player.modInfo.get().mods.joinToString(", ") { "${it.id}:${it.version}" })
-                                    )
-                                    else client.client.asMiniMessage(
-                                        Placeholder.unparsed("player", player.username),
-                                        Placeholder.unparsed("client", player.clientBrand ?: "UNKNOWN")
-                                    )
-                                }
-                            )
-                        }, {
-                            ctx.source.sendMessage(
-                                plugin.messages.command.unknownPlayer.asMiniMessage(
-                                    Placeholder.unparsed("name", name)
+                    plugin.proxyServer.getPlayer(name).getOrNull()?.let { player ->
+                        ctx.source.sendMessage(
+                            with(plugin.messages.command) {
+                                if (player.modInfo.isPresent) client.withMods.asMiniMessage(
+                                    Placeholder.unparsed("player", player.username),
+                                    Placeholder.unparsed("client", player.clientBrand ?: "UNKNOWN"),
+                                    Placeholder.unparsed("mods",
+                                        player.modInfo.get().mods.joinToString(", ") { "${it.id}:${it.version}" })
                                 )
+                                else client.client.asMiniMessage(
+                                    Placeholder.unparsed("player", player.username),
+                                    Placeholder.unparsed("client", player.clientBrand ?: "UNKNOWN")
+                                )
+                            }
+                        )
+                    } ?: {
+                        ctx.source.sendMessage(
+                            plugin.messages.command.unknownPlayer.asMiniMessage(
+                                Placeholder.unparsed("name", name)
                             )
-                        })
+                        )
+                    }
                     Command.SINGLE_SUCCESS
                 }
             )
