@@ -1,4 +1,4 @@
-package me.adrianed.clientcatcher
+package io.github._4drian3d.clientcatcher
 
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver

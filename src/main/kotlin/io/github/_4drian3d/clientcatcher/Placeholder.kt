@@ -1,4 +1,4 @@
-package me.adrianed.clientcatcher
+package io.github._4drian3d.clientcatcher
 
 import com.velocitypowered.api.proxy.Player
 import com.velocitypowered.api.proxy.ProxyServer
@@ -30,6 +30,6 @@ fun registerExpansion(proxyServer: ProxyServer) {
     }.register()
 }
 
-fun ArgumentQueue.player(proxyServer: ProxyServer): Player? =
+private fun ArgumentQueue.player(proxyServer: ProxyServer): Player? =
     proxyServer.getPlayer(popOr("You need to provide a Player Name").value()).getOrNull()
 

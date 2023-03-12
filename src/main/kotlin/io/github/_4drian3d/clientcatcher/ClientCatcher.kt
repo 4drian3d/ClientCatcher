@@ -1,4 +1,4 @@
-package me.adrianed.clientcatcher
+package io.github._4drian3d.clientcatcher
 
 import com.google.inject.Inject
 import com.velocitypowered.api.command.CommandManager
@@ -11,12 +11,12 @@ import com.velocitypowered.api.plugin.PluginManager
 import com.velocitypowered.api.plugin.annotation.DataDirectory
 import com.velocitypowered.api.proxy.ProxyServer
 
-import me.adrianed.clientcatcher.command.register
-import me.adrianed.clientcatcher.configuration.Configuration
-import me.adrianed.clientcatcher.configuration.Messages
-import me.adrianed.clientcatcher.configuration.load
-import me.adrianed.clientcatcher.listener.BrandListener
-import me.adrianed.clientcatcher.listener.ModListener
+import io.github._4drian3d.clientcatcher.command.register
+import io.github._4drian3d.clientcatcher.configuration.Configuration
+import io.github._4drian3d.clientcatcher.configuration.Messages
+import io.github._4drian3d.clientcatcher.configuration.load
+import io.github._4drian3d.clientcatcher.listener.BrandListener
+import io.github._4drian3d.clientcatcher.listener.ModListener
 import org.bstats.velocity.Metrics
 import org.slf4j.Logger
 import java.nio.file.Path

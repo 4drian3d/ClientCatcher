@@ -41,7 +41,7 @@ tasks {
             "io.leangen.geantyref",
             "org.bstats"
         ).forEach {
-            relocate(it, "me.adrianed.clientcatcher.libs.$it")
+            relocate(it, "io.github._4drian3d.clientcatcher.libs.$it")
         }
     }
     compileKotlin {
@@ -52,7 +52,7 @@ tasks {
 }
 
 blossom {
-    replaceTokenIn("src/main/kotlin/me/adrianed/clientcatcher/Constants.kt")
+    replaceTokenIn("src/main/kotlin/io/github/_4drian3d/clientcatcher/Constants.kt")
     replaceToken("{version}", project.version)
     replaceToken("{configurate}", libs.versions.configurate.get())
     replaceToken("{geantyref}", libs.versions.geantyref.get())

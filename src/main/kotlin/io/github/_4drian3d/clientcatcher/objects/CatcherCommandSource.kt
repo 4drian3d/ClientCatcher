@@ -1,4 +1,4 @@
-package me.adrianed.clientcatcher.objects
+package io.github._4drian3d.clientcatcher.objects
 
 import com.velocitypowered.api.command.CommandSource
 import com.velocitypowered.api.permission.Tristate

@@ -1,11 +1,11 @@
-package me.adrianed.clientcatcher
+package io.github._4drian3d.clientcatcher
 
 import com.velocitypowered.api.plugin.PluginManager
 import net.byteflux.libby.Library
-import org.slf4j.Logger
-import java.nio.file.Path
 import net.byteflux.libby.VelocityLibraryManager
 import net.byteflux.libby.relocation.Relocation
+import org.slf4j.Logger
+import java.nio.file.Path
 
 fun loadDependencies(
     plugin: ClientCatcher,
@@ -16,11 +16,11 @@ fun loadDependencies(
     val libraryManager = VelocityLibraryManager(logger, path, manager, plugin, "libs")
     val configurateRelocation = Relocation(
         "org{}spongepowered",
-        "me.adrianed.clientcatcher.libs.org{}spongepowered"
+        "io.github._4drian3d.clientcatcher.libs.org{}spongepowered"
     )
     val geantyrefRelocation = Relocation(
         "io{}leangen{}geantyref",
-        "me.adrianed.clientcatcher.libs.io{}leangen{}geantyref"
+        "io.github._4drian3d.clientcatcher.libs.io{}leangen{}geantyref"
     )
     val hocon = Library.builder()
         .groupId("org{}spongepowered")

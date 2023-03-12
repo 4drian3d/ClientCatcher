@@ -1,4 +1,4 @@
-package me.adrianed.clientcatcher.event
+package io.github._4drian3d.clientcatcher.event
 
 import com.velocitypowered.api.proxy.Player
 

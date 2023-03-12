@@ -1,4 +1,4 @@
-package me.adrianed.clientcatcher.configuration
+package io.github._4drian3d.clientcatcher.configuration
 
 import org.spongepowered.configurate.objectmapping.ConfigSerializable
 import org.spongepowered.configurate.objectmapping.meta.Comment

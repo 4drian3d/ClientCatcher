@@ -1,12 +1,12 @@
-package me.adrianed.clientcatcher.listener
+package io.github._4drian3d.clientcatcher.listener
 
 import com.velocitypowered.api.event.Continuation
 import com.velocitypowered.api.event.Subscribe
 import com.velocitypowered.api.event.player.PlayerClientBrandEvent
-import me.adrianed.clientcatcher.ClientCatcher
-import me.adrianed.clientcatcher.asMiniMessage
-import me.adrianed.clientcatcher.event.BlockedClientEvent
-import me.adrianed.clientcatcher.objects.CatcherCommandSource
+import io.github._4drian3d.clientcatcher.ClientCatcher
+import io.github._4drian3d.clientcatcher.asMiniMessage
+import io.github._4drian3d.clientcatcher.event.BlockedClientEvent
+import io.github._4drian3d.clientcatcher.objects.CatcherCommandSource
 import net.kyori.adventure.permission.PermissionChecker
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
