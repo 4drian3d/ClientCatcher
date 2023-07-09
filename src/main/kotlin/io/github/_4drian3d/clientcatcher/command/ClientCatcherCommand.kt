@@ -9,7 +9,7 @@ import com.velocitypowered.api.command.BrigadierCommand
 import com.velocitypowered.api.command.CommandManager
 import com.velocitypowered.api.command.CommandSource
 import io.github._4drian3d.clientcatcher.ClientCatcher
-import io.github._4drian3d.clientcatcher.asMiniMessage
+import io.github._4drian3d.clientcatcher.sendMini
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import kotlin.jvm.optionals.getOrNull
 
@@ -21,16 +21,16 @@ class ClientCatcherCommand(
         val command = BrigadierCommand(literal<CommandSource>("clientcatcher")
             .requires { it.hasPermission("clientcatcher.command") }
             .executes {
-                it.source.sendMessage(plugin.messages.command.usage.asMiniMessage())
+                it.source.sendMini(plugin.messages.command.usage)
                 Command.SINGLE_SUCCESS
             }
             .then(literal<CommandSource>("reload")
                 .requires { it.hasPermission("clientcatcher.command.reload") }
                 .executes {
                     plugin.loadConfig().thenApplyAsync { result ->
-                        if (result) plugin.messages.reload.successfully.asMiniMessage()
-                        else plugin.messages.reload.error.asMiniMessage()
-                    }.thenAcceptAsync(it.source::sendMessage)
+                        if (result) plugin.messages.reload.successfully
+                        else plugin.messages.reload.error
+                    }.thenAcceptAsync(it.source::sendMini)
                     Command.SINGLE_SUCCESS
                 }
             )
@@ -41,26 +41,20 @@ class ClientCatcherCommand(
                         .executes { ctx ->
                             val name = getString(ctx, "player")
                             plugin.proxyServer.getPlayer(name).getOrNull()?.let { player ->
-                                ctx.source.sendMessage(
-                                    with(plugin.messages.command) {
-                                        if (player.modInfo.isPresent) client.withMods.asMiniMessage(
-                                            Placeholder.unparsed("player", player.username),
-                                            Placeholder.unparsed("client", player.clientBrand ?: "UNKNOWN"),
-                                            Placeholder.unparsed("mods",
-                                                player.modInfo.get().mods.joinToString(", ") { "${it.id}:${it.version}" })
-                                        )
-                                        else client.client.asMiniMessage(
-                                            Placeholder.unparsed("player", player.username),
-                                            Placeholder.unparsed("client", player.clientBrand ?: "UNKNOWN")
-                                        )
-                                    }
-                                )
-                            } ?: {
-                                ctx.source.sendMessage(
-                                    plugin.messages.command.unknownPlayer.asMiniMessage(
-                                        Placeholder.unparsed("name", name)
+                                with(plugin.messages.command) {
+                                    if (player.modInfo.isPresent) ctx.source.sendMini(client.withMods,
+                                        Placeholder.unparsed("player", player.username),
+                                        Placeholder.unparsed("client", player.clientBrand ?: "UNKNOWN"),
+                                        Placeholder.unparsed("mods",
+                                            player.modInfo.get().mods.joinToString(", ") { "${it.id}:${it.version}" })
                                     )
-                                )
+                                    else ctx.source.sendMini(client.client,
+                                        Placeholder.unparsed("player", player.username),
+                                        Placeholder.unparsed("client", player.clientBrand ?: "UNKNOWN")
+                                    )
+                                }
+                            } ?: {
+                                ctx.source.sendMini(plugin.messages.command.unknownPlayer, Placeholder.unparsed("name", name))
                             }
                             Command.SINGLE_SUCCESS
                         }
@@ -73,26 +67,18 @@ class ClientCatcherCommand(
                         .executes { ctx ->
                             val name = getString(ctx, "player")
                             plugin.proxyServer.getPlayer(name).getOrNull()?.let { player ->
-                                ctx.source.sendMessage(
-                                    with(plugin.messages.command.mods) {
-                                        if (player.modInfo.isPresent) found.asMiniMessage(
-                                            Placeholder.unparsed("player", player.username),
-                                            Placeholder.unparsed("mods",
-                                                player.modInfo.get().mods.joinToString(", ") { "${it.id}:${it.version}" })
-                                        )
-                                        else notFound.asMiniMessage(
-                                            Placeholder.unparsed(
-                                                "player",
-                                                player.username
-                                            )
-                                        )
-                                    }
-                                )
-                            } ?: {
-                                ctx.source.sendMessage(
-                                    plugin.messages.command.unknownPlayer.asMiniMessage(
-                                        Placeholder.unparsed("name", name)
+                                with(plugin.messages.command.mods) {
+                                    if (player.modInfo.isPresent) ctx.source.sendMini(found,
+                                        Placeholder.unparsed("player", player.username),
+                                        Placeholder.unparsed("mods",
+                                            player.modInfo.get().mods.joinToString(", ") { "${it.id}:${it.version}" })
                                     )
+                                    else ctx.source.sendMini(notFound, Placeholder.unparsed("player", player.username))
+                                }
+                            } ?: {
+                                ctx.source.sendMini(
+                                    plugin.messages.command.unknownPlayer,
+                                    Placeholder.unparsed("name", name)
                                 )
                             }
                             Command.SINGLE_SUCCESS
