@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.8.22"
+    kotlin("jvm") version "1.9.0"
     kotlin("kapt") version "1.9.0"
     alias(libs.plugins.runvelocity)
     alias(libs.plugins.blossom)
