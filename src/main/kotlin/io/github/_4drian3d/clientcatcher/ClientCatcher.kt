@@ -10,8 +10,7 @@ import com.velocitypowered.api.plugin.Plugin
 import com.velocitypowered.api.plugin.PluginManager
 import com.velocitypowered.api.plugin.annotation.DataDirectory
 import com.velocitypowered.api.proxy.ProxyServer
-
-import io.github._4drian3d.clientcatcher.command.register
+import io.github._4drian3d.clientcatcher.command.ClientCatcherCommand
 import io.github._4drian3d.clientcatcher.configuration.Configuration
 import io.github._4drian3d.clientcatcher.configuration.Messages
 import io.github._4drian3d.clientcatcher.configuration.load
@@ -52,7 +51,7 @@ class ClientCatcher @Inject constructor(
 
         loadConfig().thenAcceptAsync {
             if (it) {
-                register(commandManager, this)
+                ClientCatcherCommand(commandManager, this).register()
                 eventManager.register(this, BrandListener(this))
                 eventManager.register(this, ModListener(this))
                 logger.info("Correctly loaded ClientCatcher")
