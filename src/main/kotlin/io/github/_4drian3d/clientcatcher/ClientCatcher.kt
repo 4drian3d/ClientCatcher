@@ -4,6 +4,8 @@ import com.google.inject.Inject
 import com.velocitypowered.api.command.CommandManager
 import com.velocitypowered.api.event.EventManager
 import com.velocitypowered.api.event.Subscribe
+import com.velocitypowered.api.event.player.PlayerClientBrandEvent
+import com.velocitypowered.api.event.player.PlayerModInfoEvent
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent
 import com.velocitypowered.api.plugin.Dependency
 import com.velocitypowered.api.plugin.Plugin
@@ -52,8 +54,8 @@ class ClientCatcher @Inject constructor(
         loadConfig().thenAcceptAsync {
             if (it) {
                 ClientCatcherCommand(commandManager, this).register()
-                eventManager.register(this, BrandListener(this))
-                eventManager.register(this, ModListener(this))
+                eventManager.register(this, PlayerClientBrandEvent::class.java, BrandListener(this))
+                eventManager.register(this, PlayerModInfoEvent::class.java, ModListener(this))
                 logger.info("Correctly loaded ClientCatcher")
                 if (pluginManager.isLoaded("miniplaceholders")) {
                     registerExpansion(proxyServer)

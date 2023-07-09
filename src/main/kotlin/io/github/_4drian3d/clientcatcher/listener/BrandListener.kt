@@ -1,7 +1,7 @@
 package io.github._4drian3d.clientcatcher.listener
 
-import com.velocitypowered.api.event.Continuation
-import com.velocitypowered.api.event.Subscribe
+import com.velocitypowered.api.event.AwaitingEventExecutor
+import com.velocitypowered.api.event.EventTask
 import com.velocitypowered.api.event.player.PlayerClientBrandEvent
 import io.github._4drian3d.clientcatcher.ClientCatcher
 import io.github._4drian3d.clientcatcher.event.BlockedClientEvent
@@ -11,38 +11,39 @@ import net.kyori.adventure.permission.PermissionChecker
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 
-class BrandListener(private val plugin: ClientCatcher) {
-    @Subscribe
-    fun onBrand(event: PlayerClientBrandEvent, continuation: Continuation) {
-        val resolver = with(TagResolver.builder()) {
-            resolver(Placeholder.unparsed("player", event.player.username))
-            resolver(Placeholder.unparsed("client", event.brand))
-        }.build()
+class BrandListener(private val plugin: ClientCatcher) : AwaitingEventExecutor<PlayerClientBrandEvent> {
+    override fun executeAsync(event: PlayerClientBrandEvent): EventTask {
+        return EventTask.withContinuation { continuation ->
+            val resolver = with(TagResolver.builder()) {
+                resolver(Placeholder.unparsed("player", event.player.username))
+                resolver(Placeholder.unparsed("client", event.brand))
+            }.build()
 
-        plugin.proxyServer
-            .filterAudience {
-                it.get(PermissionChecker.POINTER).map { pointer ->
-                    pointer.test("clientcatcher.alert.client")
-                }.orElse(false)
-            }.sendMini(plugin.messages.alert.client, resolver)
+            plugin.proxyServer
+                .filterAudience {
+                    it.get(PermissionChecker.POINTER).map { pointer ->
+                        pointer.test("clientcatcher.alert.client")
+                    }.orElse(false)
+                }.sendMini(plugin.messages.alert.client, resolver)
 
-        for (client in plugin.configuration.blocked.clients) {
-            if (event.brand.equals(client.name, ignoreCase = true)) {
-                plugin.eventManager.fireAndForget(BlockedClientEvent(event.brand, event.player))
+            for (client in plugin.configuration.blocked.clients) {
+                if (event.brand.equals(client.name, ignoreCase = true)) {
+                    plugin.eventManager.fireAndForget(BlockedClientEvent(event.brand, event.player))
 
-                client.commands.map {
-                    it.replace("<player>", event.player.username)
-                        .replace("<client>", event.brand)
-                }.forEach {
-                    plugin.commandManager.executeAsync(
-                        CatcherCommandSource, it
-                    )
+                    client.commands.map {
+                        it.replace("<player>", event.player.username)
+                            .replace("<client>", event.brand)
+                    }.forEach {
+                        plugin.commandManager.executeAsync(
+                            CatcherCommandSource, it
+                        )
+                    }
+
+                    continuation.resume()
+                    return@withContinuation
                 }
-
-                continuation.resume()
-                return
             }
+            continuation.resume()
         }
-        continuation.resume()
     }
 }
