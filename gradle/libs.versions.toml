@@ -8,7 +8,7 @@ bstats = "3.0.2"
 # Plugins
 blossom = "1.3.1"
 shadow = "8.1.1"
-runvelocity = "2.1.0"
+runvelocity = "2.2.0"
 
 # Required by Configurate 4
 geantyref = "1.3.13"
