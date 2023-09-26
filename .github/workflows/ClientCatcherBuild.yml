@@ -18,7 +18,7 @@ jobs:
         cache: 'gradle'
 
     - name: Build with Gradle
-      uses: nick-invision/retry@v2.8.3
+      uses: nick-invision/retry@v2.9.0
       with:
         timeout_minutes: 4
         max_attempts: 2
