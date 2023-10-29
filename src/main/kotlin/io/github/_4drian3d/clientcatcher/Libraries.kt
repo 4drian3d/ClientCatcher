@@ -14,14 +14,8 @@ fun loadDependencies(
     path: Path
 ) {
     val libraryManager = VelocityLibraryManager(logger, path, manager, plugin, "libs")
-    val configurateRelocation = Relocation(
-        "org{}spongepowered",
-        "io.github._4drian3d.clientcatcher.libs.org{}spongepowered"
-    )
-    val geantyrefRelocation = Relocation(
-        "io{}leangen{}geantyref",
-        "io.github._4drian3d.clientcatcher.libs.io{}leangen{}geantyref"
-    )
+    val configurateRelocation = relocate("org", "spongepowered")
+    val geantyrefRelocation = relocate("io", "leangen", "geantyref")
     val hocon = Library.builder()
         .groupId("org{}spongepowered")
         .artifactId("configurate-hocon")
@@ -59,4 +53,9 @@ fun loadDependencies(
     libraryManager.loadLibrary(confCore)
     libraryManager.loadLibrary(confKotlin)
     libraryManager.loadLibrary(hocon)
+}
+
+private fun relocate(vararg packageString: String): Relocation {
+    val fullString = packageString.joinToString("{}")
+    return Relocation(fullString, "io.github._4drian3d.clientcatcher.libs{}$fullString")
 }

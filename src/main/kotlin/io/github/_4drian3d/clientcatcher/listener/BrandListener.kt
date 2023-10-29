@@ -13,6 +13,9 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 class BrandListener(private val plugin: ClientCatcher) : Listener<PlayerClientBrandEvent> {
     override fun executeAsync(event: PlayerClientBrandEvent): EventTask {
         return EventTask.async {
+            if (event.player.hasPermission("clientcatcher.bypass.brand")) {
+                return@async
+            }
             val resolver = with(TagResolver.builder()) {
                 resolver(Placeholder.unparsed("player", event.player.username))
                 resolver(Placeholder.unparsed("client", event.brand))
