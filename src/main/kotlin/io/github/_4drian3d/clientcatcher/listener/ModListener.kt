@@ -11,9 +11,9 @@ import net.kyori.adventure.permission.PermissionChecker
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 
-class ModListener(private val plugin: ClientCatcher) : AwaitingEventExecutor<PlayerModInfoEvent> {
+class ModListener(private val plugin: ClientCatcher) : Listener<PlayerModInfoEvent> {
     override fun executeAsync(event: PlayerModInfoEvent): EventTask {
-        return EventTask.withContinuation { continuation ->
+        return EventTask.async {
             val resolver = with(TagResolver.builder()) {
                 resolver(Placeholder.unparsed("player", event.player.username))
                 resolver(
@@ -39,11 +39,13 @@ class ModListener(private val plugin: ClientCatcher) : AwaitingEventExecutor<Pla
                             .replace("<mod>", mod.id)
                     }.forEach { plugin.commandManager.executeAsync(CatcherCommandSource, it) }
 
-                    continuation.resume()
-                    return@withContinuation
+                    return@async
                 }
             }
-            continuation.resume()
         }
+    }
+
+    override fun register() {
+        plugin.eventManager.register(plugin, PlayerModInfoEvent::class.java, this)
     }
 }

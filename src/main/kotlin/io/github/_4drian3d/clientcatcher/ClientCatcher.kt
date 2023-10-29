@@ -54,8 +54,8 @@ class ClientCatcher @Inject constructor(
         loadConfig().thenAcceptAsync {
             if (it) {
                 ClientCatcherCommand(commandManager, this).register()
-                eventManager.register(this, PlayerClientBrandEvent::class.java, BrandListener(this))
-                eventManager.register(this, PlayerModInfoEvent::class.java, ModListener(this))
+                BrandListener(this).register()
+                ModListener(this).register()
                 logger.info("Correctly loaded ClientCatcher")
                 if (pluginManager.isLoaded("miniplaceholders")) {
                     registerExpansion(proxyServer)

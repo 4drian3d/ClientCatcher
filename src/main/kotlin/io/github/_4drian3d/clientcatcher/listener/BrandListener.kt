@@ -1,6 +1,5 @@
 package io.github._4drian3d.clientcatcher.listener
 
-import com.velocitypowered.api.event.AwaitingEventExecutor
 import com.velocitypowered.api.event.EventTask
 import com.velocitypowered.api.event.player.PlayerClientBrandEvent
 import io.github._4drian3d.clientcatcher.ClientCatcher
@@ -11,9 +10,9 @@ import net.kyori.adventure.permission.PermissionChecker
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 
-class BrandListener(private val plugin: ClientCatcher) : AwaitingEventExecutor<PlayerClientBrandEvent> {
+class BrandListener(private val plugin: ClientCatcher) : Listener<PlayerClientBrandEvent> {
     override fun executeAsync(event: PlayerClientBrandEvent): EventTask {
-        return EventTask.withContinuation { continuation ->
+        return EventTask.async {
             val resolver = with(TagResolver.builder()) {
                 resolver(Placeholder.unparsed("player", event.player.username))
                 resolver(Placeholder.unparsed("client", event.brand))
@@ -39,11 +38,13 @@ class BrandListener(private val plugin: ClientCatcher) : AwaitingEventExecutor<P
                         )
                     }
 
-                    continuation.resume()
-                    return@withContinuation
+                    return@async
                 }
             }
-            continuation.resume()
         }
+    }
+
+    override fun register() {
+        plugin.eventManager.register(plugin, PlayerClientBrandEvent::class.java, this)
     }
 }
