@@ -2,6 +2,7 @@ plugins {
     kotlin("jvm") version "1.9.10"
     kotlin("kapt") version "1.9.10"
     alias(libs.plugins.runvelocity)
+    alias(libs.plugins.idea.ext)
     alias(libs.plugins.blossom)
     alias(libs.plugins.shadow)
 }
@@ -54,11 +55,17 @@ tasks {
     }
 }
 
-blossom {
-    replaceTokenIn("src/main/kotlin/io/github/_4drian3d/clientcatcher/Constants.kt")
-    replaceToken("{version}", project.version)
-    replaceToken("{configurate}", libs.versions.configurate.get())
-    replaceToken("{geantyref}", libs.versions.geantyref.get())
+
+sourceSets {
+    main {
+        blossom {
+            kotlinSources {
+                property("version", project.version.toString())
+                property("configurate", libs.versions.configurate.get())
+                property("geantyref", libs.versions.geantyref.get())
+            }
+        }
+    }
 }
 
 kotlin {

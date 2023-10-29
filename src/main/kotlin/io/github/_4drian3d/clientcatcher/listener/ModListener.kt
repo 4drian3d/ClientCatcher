@@ -1,6 +1,5 @@
 package io.github._4drian3d.clientcatcher.listener
 
-import com.velocitypowered.api.event.AwaitingEventExecutor
 import com.velocitypowered.api.event.EventTask
 import com.velocitypowered.api.event.player.PlayerModInfoEvent
 import io.github._4drian3d.clientcatcher.ClientCatcher
