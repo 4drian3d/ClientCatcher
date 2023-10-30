@@ -23,7 +23,9 @@ dependencies {
 
     implementation(libs.libby)
     implementation(libs.bstats)
-    implementation(libs.jdwebhooks)
+    implementation(libs.jdwebhooks) {
+        isTransitive = false
+    }
 }
 
 tasks {
@@ -44,7 +46,7 @@ tasks {
             "net.byteflux",
             "io.leangen.geantyref",
             "org.bstats",
-            "io.github._4drian.jdwebhooks"
+            "io.github._4drian3d.jdwebhooks"
         ).forEach {
             relocate(it, "io.github._4drian3d.clientcatcher.libs.$it")
         }

@@ -114,6 +114,7 @@ class Configuration {
             var avatarURL = "https://avatars.githubusercontent.com/u/68704415"
             var embed = Embed()
 
+            @ConfigSerializable
             class Embed {
                 var title = "Title"
                 var description = "Description"
@@ -121,6 +122,7 @@ class Configuration {
                     Field()
                 )
 
+                @ConfigSerializable
                 class Field {
                     var inline = false
                     var name = "Name"
