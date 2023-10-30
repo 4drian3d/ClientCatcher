@@ -10,6 +10,12 @@ class Configuration {
         + "\nFor moderation commands, I recommend you to use LibertyBans"
     )
     var blocked = Blocked()
+
+    @Comment(
+        "Configuration of WebHooks"
+    )
+    var webHook = WebHook()
+
     @ConfigSerializable
     class Blocked {
         @Comment(
@@ -81,6 +87,46 @@ class Configuration {
             var result = name.hashCode()
             result = 31 * result + commands.hashCode()
             return result
+        }
+    }
+
+    @ConfigSerializable
+    class WebHook {
+        @Comment("WebHook ID")
+        var id = "ID"
+        @Comment("WebHook TOKEN")
+        var token = "TOKEN"
+        @Comment(
+            "a"
+        )
+        var client = WebHookElement()
+
+        @Comment(
+            "b"
+        )
+        var mods = WebHookElement()
+
+        @ConfigSerializable
+        class WebHookElement {
+            var enabled = false
+            var content = "Content"
+            var username = "Username"
+            var avatarURL = "https://avatars.githubusercontent.com/u/68704415"
+            var embed = Embed()
+
+            class Embed {
+                var title = "Title"
+                var description = "Description"
+                var fields = listOf(
+                    Field()
+                )
+
+                class Field {
+                    var inline = false
+                    var name = "Name"
+                    var value = "Value"
+                }
+            }
         }
     }
 }

@@ -28,6 +28,7 @@ configurate-kotlin = { module = "org.spongepowered:configurate-extra-kotlin", ve
 libby = { group = "net.byteflux", name = "libby-velocity", version.ref = "libby" }
 miniplaceholders-api = { group = "io.github.miniplaceholders", name = "miniplaceholders-api", version.ref = "miniplaceholders" }
 miniplaceholders-kotlin = { group = "io.github.miniplaceholders", name = "miniplaceholders-kotlin-ext", version.ref = "miniplaceholders" }
+jdwebhooks = { group = "io.github.4drian3d", name = "jdwebhooks", version = "1.0.1" }
 
 [plugins]
 

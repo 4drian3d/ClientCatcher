@@ -23,6 +23,7 @@ dependencies {
 
     implementation(libs.libby)
     implementation(libs.bstats)
+    implementation(libs.jdwebhooks)
 }
 
 tasks {
@@ -42,7 +43,8 @@ tasks {
             "org.spongepowered",
             "net.byteflux",
             "io.leangen.geantyref",
-            "org.bstats"
+            "org.bstats",
+            "io.github._4drian.jdwebhooks"
         ).forEach {
             relocate(it, "io.github._4drian3d.clientcatcher.libs.$it")
         }

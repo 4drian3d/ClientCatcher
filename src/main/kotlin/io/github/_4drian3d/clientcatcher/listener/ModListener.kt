@@ -6,9 +6,9 @@ import io.github._4drian3d.clientcatcher.ClientCatcher
 import io.github._4drian3d.clientcatcher.event.BlockedModEvent
 import io.github._4drian3d.clientcatcher.objects.CatcherCommandSource
 import io.github._4drian3d.clientcatcher.sendMini
+import io.github._4drian3d.clientcatcher.sendWebHook
+import io.github._4drian3d.clientcatcher.webhook.Replacer
 import net.kyori.adventure.permission.PermissionChecker
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
-import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 
 class ModListener(private val plugin: ClientCatcher) : Listener<PlayerModInfoEvent> {
     override fun executeAsync(event: PlayerModInfoEvent): EventTask {
@@ -16,14 +16,9 @@ class ModListener(private val plugin: ClientCatcher) : Listener<PlayerModInfoEve
             if (event.player.hasPermission("clientcatcher.bypass.mods")) {
                 return@async
             }
-            val resolver = with(TagResolver.builder()) {
-                resolver(Placeholder.unparsed("player", event.player.username))
-                resolver(
-                    Placeholder.unparsed("mods",
-                        event.modInfo.mods.joinToString(", ") { "${it.id}:${it.version}" })
-                )
-            }.build()
+            val resolver = Replacer.Mods(event.modInfo, event.player.username)
 
+            sendWebHook(plugin, resolver, plugin.configuration.webHook.mods)
 
             plugin.proxyServer
                 .filterAudience {

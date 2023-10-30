@@ -6,9 +6,9 @@ import io.github._4drian3d.clientcatcher.ClientCatcher
 import io.github._4drian3d.clientcatcher.event.BlockedClientEvent
 import io.github._4drian3d.clientcatcher.objects.CatcherCommandSource
 import io.github._4drian3d.clientcatcher.sendMini
+import io.github._4drian3d.clientcatcher.sendWebHook
+import io.github._4drian3d.clientcatcher.webhook.Replacer
 import net.kyori.adventure.permission.PermissionChecker
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
-import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 
 class BrandListener(private val plugin: ClientCatcher) : Listener<PlayerClientBrandEvent> {
     override fun executeAsync(event: PlayerClientBrandEvent): EventTask {
@@ -16,10 +16,9 @@ class BrandListener(private val plugin: ClientCatcher) : Listener<PlayerClientBr
             if (event.player.hasPermission("clientcatcher.bypass.brand")) {
                 return@async
             }
-            val resolver = with(TagResolver.builder()) {
-                resolver(Placeholder.unparsed("player", event.player.username))
-                resolver(Placeholder.unparsed("client", event.brand))
-            }.build()
+            val resolver = Replacer.Client(event.brand, event.player.username)
+
+            sendWebHook(plugin, resolver, plugin.configuration.webHook.client)
 
             plugin.proxyServer
                 .filterAudience {
