@@ -97,12 +97,22 @@ class Configuration {
         @Comment("WebHook TOKEN")
         var token = "TOKEN"
         @Comment(
-            "a"
+            "Client Detected WebHook\n"
+            + "Placeholders:\n"
+            + "- <player>\n"
+            + "  | Player Name\n"
+            + "- <client>\n"
+            + "  | Client Name"
         )
         var client = WebHookElement()
 
         @Comment(
-            "b"
+            "Mods Detected WebHook\n"
+            + "Placeholders:\n"
+            + "- <player>\n"
+            + "  | Player Name\n"
+            + "- <mods>\n"
+            + "  | Mods Detected"
         )
         var mods = WebHookElement()
 
