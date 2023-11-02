@@ -25,7 +25,7 @@ class ModListener(private val plugin: ClientCatcher) : Listener<PlayerModInfoEve
                     it.get(PermissionChecker.POINTER).map { pointer ->
                         pointer.test("clientcatcher.alert.mods")
                     }.orElse(false)
-                }.sendMini(plugin.messages.alert.mods, resolver)
+                }.sendMini(plugin.messages.alert.mods, plugin.componentLogger, resolver)
 
             for (mod in event.modInfo.mods) for (blocked in plugin.configuration.blocked.mods) {
                 if (blocked.name.equals(mod.id, ignoreCase = true)) {

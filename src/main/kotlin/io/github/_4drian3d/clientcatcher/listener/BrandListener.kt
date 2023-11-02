@@ -25,7 +25,7 @@ class BrandListener(private val plugin: ClientCatcher) : Listener<PlayerClientBr
                     it.get(PermissionChecker.POINTER).map { pointer ->
                         pointer.test("clientcatcher.alert.client")
                     }.orElse(false)
-                }.sendMini(plugin.messages.alert.client, resolver)
+                }.sendMini(plugin.messages.alert.client, plugin.componentLogger, resolver)
 
             for (client in plugin.configuration.blocked.clients) {
                 if (event.brand.equals(client.name, ignoreCase = true)) {

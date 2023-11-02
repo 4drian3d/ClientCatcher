@@ -17,6 +17,7 @@ import io.github._4drian3d.clientcatcher.configuration.load
 import io.github._4drian3d.clientcatcher.listener.BrandListener
 import io.github._4drian3d.clientcatcher.listener.ModListener
 import io.github._4drian3d.jdwebhooks.WebHookClient
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger
 import org.bstats.velocity.Metrics
 import org.slf4j.Logger
 import java.nio.file.Path
@@ -40,6 +41,7 @@ class ClientCatcher @Inject constructor(
     val proxyServer: ProxyServer,
     val commandManager: CommandManager,
     val eventManager: EventManager,
+    val componentLogger: ComponentLogger
 ) {
     lateinit var configuration: Configuration
         private set

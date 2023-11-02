@@ -21,16 +21,16 @@ class ClientCatcherCommand(
         val command = BrigadierCommand(literal<CommandSource>("clientcatcher")
             .requires { it.hasPermission("clientcatcher.command") }
             .executes {
-                it.source.sendMini(plugin.messages.command.usage)
+                it.source.sendMini(plugin.messages.command.usage, plugin.componentLogger)
                 Command.SINGLE_SUCCESS
             }
             .then(literal<CommandSource>("reload")
                 .requires { it.hasPermission("clientcatcher.command.reload") }
-                .executes {
-                    plugin.loadConfig().thenApplyAsync { result ->
+                .executes { ctx ->
+                    plugin.loadConfig().thenApply { result ->
                         if (result) plugin.messages.reload.successfully
                         else plugin.messages.reload.error
-                    }.thenAcceptAsync(it.source::sendMini)
+                    }.thenAccept { ctx.source.sendMini(it, plugin.componentLogger) }
                     Command.SINGLE_SUCCESS
                 }
             )
@@ -42,19 +42,20 @@ class ClientCatcherCommand(
                             val name = getString(ctx, "player")
                             plugin.proxyServer.getPlayer(name).getOrNull()?.let { player ->
                                 with(plugin.messages.command) {
-                                    if (player.modInfo.isPresent) ctx.source.sendMini(client.withMods,
+                                    if (player.modInfo.isPresent) ctx.source.sendMini(client.withMods, plugin.componentLogger,
                                         Placeholder.unparsed("player", player.username),
                                         Placeholder.unparsed("client", player.clientBrand ?: "UNKNOWN"),
                                         Placeholder.unparsed("mods",
                                             player.modInfo.get().mods.joinToString(", ") { "${it.id}:${it.version}" })
                                     )
-                                    else ctx.source.sendMini(client.client,
+                                    else ctx.source.sendMini(client.client, plugin.componentLogger,
                                         Placeholder.unparsed("player", player.username),
                                         Placeholder.unparsed("client", player.clientBrand ?: "UNKNOWN")
                                     )
                                 }
                             } ?: {
-                                ctx.source.sendMini(plugin.messages.command.unknownPlayer, Placeholder.unparsed("name", name))
+                                ctx.source.sendMini(plugin.messages.command.unknownPlayer,
+                                    plugin.componentLogger, Placeholder.unparsed("name", name))
                             }
                             Command.SINGLE_SUCCESS
                         }
@@ -68,16 +69,18 @@ class ClientCatcherCommand(
                             val name = getString(ctx, "player")
                             plugin.proxyServer.getPlayer(name).getOrNull()?.let { player ->
                                 with(plugin.messages.command.mods) {
-                                    if (player.modInfo.isPresent) ctx.source.sendMini(found,
+                                    if (player.modInfo.isPresent) ctx.source.sendMini(found, plugin.componentLogger,
                                         Placeholder.unparsed("player", player.username),
                                         Placeholder.unparsed("mods",
                                             player.modInfo.get().mods.joinToString(", ") { "${it.id}:${it.version}" })
                                     )
-                                    else ctx.source.sendMini(notFound, Placeholder.unparsed("player", player.username))
+                                    else ctx.source.sendMini(notFound,
+                                        plugin.componentLogger, Placeholder.unparsed("player", player.username))
                                 }
                             } ?: {
                                 ctx.source.sendMini(
                                     plugin.messages.command.unknownPlayer,
+                                    plugin.componentLogger,
                                     Placeholder.unparsed("name", name)
                                 )
                             }
