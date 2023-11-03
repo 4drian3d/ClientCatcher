@@ -25,8 +25,8 @@ interface Replacer : TagResolver {
         }
 
         override fun replace(string: String): String {
-            return string.replace("client", client)
-                .replace("player", player)
+            return string.replace("<client>", client)
+                .replace("<player>", player)
         }
 
     }
@@ -46,8 +46,8 @@ interface Replacer : TagResolver {
         }
 
         override fun replace(string: String): String {
-            return string.replace("player", player)
-                .replace("mods", modInfo.mods.joinToString(", ") { "${it.id}:${it.version}" })
+            return string.replace("<player>", player)
+                .replace("<mods>", modInfo.mods.joinToString(", ") { "${it.id}:${it.version}" })
         }
 
     }
