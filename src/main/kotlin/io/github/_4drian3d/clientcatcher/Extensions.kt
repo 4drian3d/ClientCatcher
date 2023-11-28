@@ -82,7 +82,7 @@ fun sendWebHook(plugin: ClientCatcher, replacer: Replacer, config: Configuration
                         Embed.Field(it.inline, replacer.replace(it.name), replacer.replace(it.value))
                     })
                     .title(replacer.replace(embedConfig.title))
-                    .description(embedConfig.description).build()
+                    .description(replacer.replace(embedConfig.description)).build()
             )
             builder.build()
         }.thenCompose { client.sendWebHook(it) }
