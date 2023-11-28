@@ -37,6 +37,10 @@ tasks {
     }
     runVelocity {
         velocityVersion(libs.versions.velocity.get())
+        downloadPlugins {
+            url("https://cdn.modrinth.com/data/1iWA0pjH/versions/rEHcRyPV/MCKotlinVelocity-1.4.0-k1.9.21.jar")
+            url("https://cdn.modrinth.com/data/HQyibRsN/versions/pxgKwgNJ/MiniPlaceholders-Velocity-2.2.3.jar")
+        }
     }
     shadowJar {
         archiveBaseName.set(rootProject.name)

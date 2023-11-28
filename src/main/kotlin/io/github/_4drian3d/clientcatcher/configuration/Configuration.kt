@@ -104,7 +104,13 @@ class Configuration {
             + "- <client>\n"
             + "  | Client Name"
         )
-        var client = WebHookElement()
+        var client = WebHookElement().also {
+            it.content = "Client Detected"
+            with(it.embed) {
+                title = "Client:"
+                description = "<client>"
+            }
+        }
 
         @Comment(
             "Mods Detected WebHook\n"
@@ -114,14 +120,20 @@ class Configuration {
             + "- <mods>\n"
             + "  | Mods Detected"
         )
-        var mods = WebHookElement()
+        var mods = WebHookElement().also {
+            it.content = "Mod Detected"
+            with(it.embed) {
+                title = "Mods:"
+                description = "<mods>"
+            }
+        }
 
         @ConfigSerializable
         class WebHookElement {
             var enabled = false
             var content = "Content"
-            var username = "Username"
-            var avatarURL = "https://avatars.githubusercontent.com/u/68704415"
+            var username = "ClientCatcher"
+            var avatarURL = "https://cdn.modrinth.com/data/Dhqd1a7j/0a4240c54efdcabcd18e7ff47aaffdb79a7c92fd.png"
             var embed = Embed()
 
             @ConfigSerializable
@@ -136,7 +148,7 @@ class Configuration {
                 class Field {
                     var inline = false
                     var name = "Name"
-                    var value = "Value"
+                    var value = "<player>"
                 }
             }
         }
