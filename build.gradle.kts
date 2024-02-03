@@ -18,7 +18,9 @@ dependencies {
     compileOnly(libs.miniplaceholders.api)
     compileOnly(libs.miniplaceholders.kotlin)
 
-    implementation(libs.configurate.kotlin)
+    implementation(libs.configurate.kotlin) {
+        isTransitive = false
+    }
     implementation(libs.bstats)
     implementation(libs.jdwebhooks) {
         isTransitive = false
