@@ -19,7 +19,6 @@ import io.github._4drian3d.clientcatcher.listener.ModListener
 import io.github._4drian3d.jdwebhooks.WebHookClient
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger
 import org.bstats.velocity.Metrics
-import org.slf4j.Logger
 import java.nio.file.Path
 import java.util.concurrent.CompletableFuture
 
@@ -36,7 +35,6 @@ import java.util.concurrent.CompletableFuture
 class ClientCatcher @Inject constructor(
     @DataDirectory private val path: Path,
     private val pluginManager: PluginManager,
-    private val logger: Logger,
     private val metrics: Metrics.Factory,
     val proxyServer: ProxyServer,
     val commandManager: CommandManager,
@@ -56,7 +54,7 @@ class ClientCatcher @Inject constructor(
                 ClientCatcherCommand(commandManager, this).register()
                 BrandListener(this).register()
                 ModListener(this).register()
-                logger.info("Correctly loaded ClientCatcher")
+                componentLogger.info("Correctly loaded ClientCatcher")
                 if (pluginManager.isLoaded("miniplaceholders")) {
                     registerExpansion(proxyServer)
                 }
@@ -76,7 +74,7 @@ class ClientCatcher @Inject constructor(
         }
         true
     }.exceptionally {
-        logger.error("Cannot load configuration", it)
+        componentLogger.error("Cannot load configuration", it)
         false
     }!!
 }

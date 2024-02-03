@@ -71,7 +71,6 @@ fun sendWebHook(plugin: ClientCatcher, replacer: Replacer, config: Configuration
     if (client != null && config.enabled) {
         CompletableFuture.supplyAsync {
             val builder = WebHook.builder()
-                .allowedMentions(false)
                 .content(replacer.replace(config.content))
                 .username(replacer.replace(config.username))
                 .avatarURL(config.avatarURL)
@@ -82,7 +81,8 @@ fun sendWebHook(plugin: ClientCatcher, replacer: Replacer, config: Configuration
                         Embed.Field(it.inline, replacer.replace(it.name), replacer.replace(it.value))
                     })
                     .title(replacer.replace(embedConfig.title))
-                    .description(replacer.replace(embedConfig.description)).build()
+                    .description(replacer.replace(embedConfig.description))
+                    .build()
             )
             builder.build()
         }.thenCompose { client.sendWebHook(it) }
