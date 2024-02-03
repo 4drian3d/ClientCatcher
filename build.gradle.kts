@@ -9,19 +9,16 @@ plugins {
 
 repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
-    maven("https://repo.alessiodp.com/releases/")
 }
 
 dependencies {
     compileOnly(kotlin("stdlib"))
     compileOnly(libs.velocity)
     kapt(libs.velocity)
-    compileOnly(libs.configurate.hocon)
-    compileOnly(libs.configurate.kotlin)
     compileOnly(libs.miniplaceholders.api)
     compileOnly(libs.miniplaceholders.kotlin)
 
-    implementation(libs.libby)
+    implementation(libs.configurate.kotlin)
     implementation(libs.bstats)
     implementation(libs.jdwebhooks) {
         isTransitive = false
@@ -46,9 +43,7 @@ tasks {
         archiveBaseName.set(rootProject.name)
         archiveClassifier.set("")
         listOf(
-            "org.spongepowered",
-            "net.byteflux",
-            "io.leangen.geantyref",
+            "org.spongepowered.configurate.kotlin",
             "org.bstats",
             "io.github._4drian3d.jdwebhooks"
         ).forEach {
@@ -69,8 +64,6 @@ sourceSets {
         blossom {
             kotlinSources {
                 property("version", project.version.toString())
-                property("configurate", libs.versions.configurate.get())
-                property("geantyref", libs.versions.geantyref.get())
             }
         }
     }

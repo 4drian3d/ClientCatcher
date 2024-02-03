@@ -51,9 +51,7 @@ class ClientCatcher @Inject constructor(
 
     @Subscribe
     fun onProxyInitialization(event: ProxyInitializeEvent) {
-        loadDependencies(this, logger, pluginManager, path)
-
-        loadConfig().thenAcceptAsync {
+        loadConfig().thenAccept {
             if (it) {
                 ClientCatcherCommand(commandManager, this).register()
                 BrandListener(this).register()
