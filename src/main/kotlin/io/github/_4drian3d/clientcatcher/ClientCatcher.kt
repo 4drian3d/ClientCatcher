@@ -69,7 +69,10 @@ class ClientCatcher @Inject constructor(
         configuration = load(path)
         messages = load(path)
         if ((configuration.webHook.client.enabled || configuration.webHook.mods.enabled) && webHookClient == null) {
-            webHookClient = WebHookClient.from(configuration.webHook.id, configuration.webHook.token)
+            webHookClient = WebHookClient.builder()
+                .credentials(configuration.webHook.id, configuration.webHook.token)
+                .agent("github/4drian3d/ClientCatcher")
+                .build()
         }
         true
     }.exceptionally {
