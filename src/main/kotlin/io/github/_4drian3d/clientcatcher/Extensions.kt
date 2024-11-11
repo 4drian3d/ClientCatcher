@@ -16,7 +16,7 @@ val hasMiniPlaceholders by lazy {
     try {
         Class.forName("io.github.miniplaceholders.api.MiniPlaceholders")
         true
-    } catch (e: ClassNotFoundException) {
+    } catch (_: ClassNotFoundException) {
         false
     }
 }

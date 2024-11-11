@@ -37,8 +37,8 @@ tasks {
     runVelocity {
         velocityVersion(libs.versions.velocity.get())
         downloadPlugins {
-            url("https://cdn.modrinth.com/data/1iWA0pjH/versions/rEHcRyPV/MCKotlinVelocity-1.4.0-k1.9.21.jar")
-            url("https://cdn.modrinth.com/data/HQyibRsN/versions/pxgKwgNJ/MiniPlaceholders-Velocity-2.2.3.jar")
+            url("https://cdn.modrinth.com/data/1iWA0pjH/versions/3PY3lTnr/MCKotlinVelocity-1.5.1-k2.0.21.jar")
+            url("https://cdn.modrinth.com/data/HQyibRsN/versions/pxgKwgNJ/MiniPlaceholders-Velocity-2.2.4.jar")
         }
     }
     shadowJar {
@@ -54,8 +54,8 @@ tasks {
     }
     compileKotlin {
         compilerOptions {
-            apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_1_9)
-            languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_1_9)
+            apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
+            languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
         }
     }
 }

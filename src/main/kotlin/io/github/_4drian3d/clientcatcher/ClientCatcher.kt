@@ -22,6 +22,7 @@ import org.bstats.velocity.Metrics
 import java.nio.file.Path
 import java.util.concurrent.CompletableFuture
 
+@Suppress("unused")
 @Plugin(
     id = "clientcatcher",
     name = "ClientCatcher",

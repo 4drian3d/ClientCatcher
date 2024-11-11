@@ -3,11 +3,9 @@ package io.github._4drian3d.clientcatcher.command
 import com.mojang.brigadier.Command
 import com.mojang.brigadier.arguments.StringArgumentType.getString
 import com.mojang.brigadier.arguments.StringArgumentType.word
-import com.mojang.brigadier.builder.LiteralArgumentBuilder.literal
-import com.mojang.brigadier.builder.RequiredArgumentBuilder.argument
 import com.velocitypowered.api.command.BrigadierCommand
+import com.velocitypowered.api.command.BrigadierCommand.*
 import com.velocitypowered.api.command.CommandManager
-import com.velocitypowered.api.command.CommandSource
 import io.github._4drian3d.clientcatcher.ClientCatcher
 import io.github._4drian3d.clientcatcher.sendMini
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
@@ -18,13 +16,13 @@ class ClientCatcherCommand(
     private val plugin: ClientCatcher
 ) {
     fun register() {
-        val command = BrigadierCommand(literal<CommandSource>("clientcatcher")
+        val command = BrigadierCommand(literalArgumentBuilder("clientcatcher")
             .requires { it.hasPermission("clientcatcher.command") }
             .executes {
                 it.source.sendMini(plugin.messages.command.usage, plugin.componentLogger)
                 Command.SINGLE_SUCCESS
             }
-            .then(literal<CommandSource>("reload")
+            .then(literalArgumentBuilder("reload")
                 .requires { it.hasPermission("clientcatcher.command.reload") }
                 .executes { ctx ->
                     plugin.loadConfig().thenApply { result ->
@@ -34,7 +32,7 @@ class ClientCatcherCommand(
                     Command.SINGLE_SUCCESS
                 }
             )
-            .then(literal<CommandSource>("client")
+            .then(literalArgumentBuilder("client")
                 .requires { it.hasPermission("clientcatcher.command.client") }
                 .then(
                     playerArgument()
@@ -61,7 +59,7 @@ class ClientCatcherCommand(
                         }
                 )
             )
-            .then(literal<CommandSource>("mods")
+            .then(literalArgumentBuilder("mods")
                 .requires { it.hasPermission("clientcatcher.command.mods") }
                 .then(
                     playerArgument()
@@ -99,7 +97,7 @@ class ClientCatcherCommand(
         manager.register(meta, command)
     }
 
-    private fun playerArgument() = argument<CommandSource, String>("player", word())
+    private fun playerArgument() = requiredArgumentBuilder<String>("player", word())
         .suggests { _, builder ->
             plugin.proxyServer.allPlayers.map { it.username }.forEach(builder::suggest)
             builder.buildFuture()
