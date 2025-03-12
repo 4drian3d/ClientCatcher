@@ -37,8 +37,8 @@ tasks {
     runVelocity {
         velocityVersion(libs.versions.velocity.get())
         downloadPlugins {
-            url("https://cdn.modrinth.com/data/1iWA0pjH/versions/3PY3lTnr/MCKotlinVelocity-1.5.1-k2.0.21.jar")
-            url("https://cdn.modrinth.com/data/HQyibRsN/versions/pxgKwgNJ/MiniPlaceholders-Velocity-2.2.4.jar")
+            modrinth("mckotlin", "3PY3lTnr")
+            modrinth("miniplaceholders", "Nsctgs29")
         }
     }
     shadowJar {
@@ -73,7 +73,7 @@ sourceSets {
 
 kotlin {
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }
 

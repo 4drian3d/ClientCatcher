@@ -3,12 +3,12 @@ package io.github._4drian3d.clientcatcher.listener
 import com.velocitypowered.api.event.EventTask
 import com.velocitypowered.api.event.player.PlayerClientBrandEvent
 import io.github._4drian3d.clientcatcher.ClientCatcher
+import io.github._4drian3d.clientcatcher.doWithFilteredAudience
 import io.github._4drian3d.clientcatcher.event.BlockedClientEvent
 import io.github._4drian3d.clientcatcher.objects.CatcherCommandSource
 import io.github._4drian3d.clientcatcher.sendMini
 import io.github._4drian3d.clientcatcher.sendWebHook
 import io.github._4drian3d.clientcatcher.webhook.Replacer
-import net.kyori.adventure.permission.PermissionChecker
 
 class BrandListener(private val plugin: ClientCatcher) : Listener<PlayerClientBrandEvent> {
     override fun executeAsync(event: PlayerClientBrandEvent): EventTask {
@@ -20,12 +20,9 @@ class BrandListener(private val plugin: ClientCatcher) : Listener<PlayerClientBr
 
             sendWebHook(plugin, resolver, plugin.configuration.webHook.client)
 
-            plugin.proxyServer
-                .filterAudience {
-                    it.get(PermissionChecker.POINTER).map { pointer ->
-                        pointer.test("clientcatcher.alert.client")
-                    }.orElse(false)
-                }.sendMini(plugin.messages.alert.client, plugin.componentLogger, resolver)
+            plugin.proxyServer.doWithFilteredAudience("clientcatcher.alert.client") {
+                it.sendMini(plugin.messages.alert.client, plugin.componentLogger, resolver)
+            }
 
             for (client in plugin.configuration.blocked.clients) {
                 if (event.brand.equals(client.name, ignoreCase = true)) {

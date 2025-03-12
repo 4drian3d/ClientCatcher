@@ -2,6 +2,7 @@ package io.github._4drian3d.clientcatcher
 
 import com.velocitypowered.api.command.CommandSource
 import com.velocitypowered.api.proxy.ConsoleCommandSource
+import com.velocitypowered.api.proxy.ProxyServer
 import io.github._4drian3d.clientcatcher.configuration.Configuration
 import io.github._4drian3d.clientcatcher.webhook.Replacer
 import io.github._4drian3d.jdwebhooks.Embed
@@ -19,6 +20,11 @@ val hasMiniPlaceholders by lazy {
     } catch (_: ClassNotFoundException) {
         false
     }
+}
+
+fun ProxyServer.doWithFilteredAudience(permission: String, action: (CommandSource) -> Unit) {
+    action.invoke(this.consoleCommandSource)
+    allPlayers.forEach { if (it.hasPermission(permission)) action.invoke(it) }
 }
 
 private fun String.asMiniMessage(resolver: TagResolver) = MiniMessage.miniMessage().deserialize(this, resolver)

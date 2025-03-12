@@ -3,12 +3,12 @@ package io.github._4drian3d.clientcatcher.listener
 import com.velocitypowered.api.event.EventTask
 import com.velocitypowered.api.event.player.PlayerModInfoEvent
 import io.github._4drian3d.clientcatcher.ClientCatcher
+import io.github._4drian3d.clientcatcher.doWithFilteredAudience
 import io.github._4drian3d.clientcatcher.event.BlockedModEvent
 import io.github._4drian3d.clientcatcher.objects.CatcherCommandSource
 import io.github._4drian3d.clientcatcher.sendMini
 import io.github._4drian3d.clientcatcher.sendWebHook
 import io.github._4drian3d.clientcatcher.webhook.Replacer
-import net.kyori.adventure.permission.PermissionChecker
 
 class ModListener(private val plugin: ClientCatcher) : Listener<PlayerModInfoEvent> {
     override fun executeAsync(event: PlayerModInfoEvent): EventTask {
@@ -20,12 +20,9 @@ class ModListener(private val plugin: ClientCatcher) : Listener<PlayerModInfoEve
 
             sendWebHook(plugin, resolver, plugin.configuration.webHook.mods)
 
-            plugin.proxyServer
-                .filterAudience {
-                    it.get(PermissionChecker.POINTER).map { pointer ->
-                        pointer.test("clientcatcher.alert.mods")
-                    }.orElse(false)
-                }.sendMini(plugin.messages.alert.mods, plugin.componentLogger, resolver)
+            plugin.proxyServer.doWithFilteredAudience("clientcatcher.alert.mods") {
+                it.sendMini(plugin.messages.alert.mods, plugin.componentLogger, resolver)
+            }
 
             for (mod in event.modInfo.mods) for (blocked in plugin.configuration.blocked.mods) {
                 if (blocked.name.equals(mod.id, ignoreCase = true)) {

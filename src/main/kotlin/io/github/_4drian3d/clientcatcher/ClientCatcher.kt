@@ -77,5 +77,5 @@ class ClientCatcher @Inject constructor(
     }.exceptionally {
         componentLogger.error("Cannot load configuration", it)
         false
-    }!!
+    }
 }
