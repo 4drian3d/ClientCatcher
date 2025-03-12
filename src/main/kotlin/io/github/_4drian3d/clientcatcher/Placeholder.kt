@@ -20,12 +20,12 @@ fun registerExpansion(proxyServer: ProxyServer) {
             queue.player(proxyServer)?.let { player ->
                 val mods = player.modInfo.getOrNull()?.mods
                 text(mods?.joinToString(", ") { "${it.id}:${it.version}" } ?: "").asClosingTag()
-            } ?: throw ctx.newException("Offline Player provided")
+            } ?: throw ctx.newException("Invalid or Offline player provided")
         }
         .globalPlaceholder("player_mods") { queue, ctx ->
             queue.player(proxyServer)?.let {
                 text(it.clientBrand ?: "").asClosingTag()
-            } ?: throw ctx.newException("Offline Player provided")
+            } ?: throw ctx.newException("Invalid or offline player provided")
         }
     }.register()
 }
