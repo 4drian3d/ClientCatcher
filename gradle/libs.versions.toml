@@ -12,7 +12,7 @@ runvelocity = "2.3.1"
 
 configurate = "4.2.0"
 
-miniplaceholders = "2.2.3"
+miniplaceholders = "2.3.0"
 
 [libraries]
 
