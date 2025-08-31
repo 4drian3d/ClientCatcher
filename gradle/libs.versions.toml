@@ -7,7 +7,7 @@ bstats = "3.1.0"
 
 # Plugins
 blossom = "2.1.0"
-shadow = "8.3.5"
+shadow = "9.1.0"
 runvelocity = "2.3.1"
 
 configurate = "4.2.0"
