@@ -37,8 +37,8 @@ tasks {
     runVelocity {
         velocityVersion(libs.versions.velocity.get())
         downloadPlugins {
-            modrinth("mckotlin", "3PY3lTnr")
-            modrinth("miniplaceholders", "Nsctgs29")
+            modrinth("mckotlin", "E0RrjAEB")
+            modrinth("miniplaceholders", "fW9GvvXS")
         }
     }
     shadowJar {

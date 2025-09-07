@@ -33,7 +33,7 @@ fun CommandSource.sendMini(message: String, logger: ComponentLogger, resolver: T
     if (message.isNotBlank()) {
         val builder = TagResolver.builder().resolver(resolver)
         if (hasMiniPlaceholders) {
-            builder.resolver(MiniPlaceholders.getAudienceGlobalPlaceholders(this))
+            builder.resolver(MiniPlaceholders.audienceGlobalPlaceholders())
         }
         if (this is ConsoleCommandSource) {
             logger.info(message.asMiniMessage(builder.build()))
@@ -48,7 +48,7 @@ fun CommandSource.sendMini(message: String, logger: ComponentLogger, vararg reso
     if (message.isNotBlank()) {
         val builder = TagResolver.builder().resolvers(*resolver)
         if (hasMiniPlaceholders) {
-            builder.resolver(MiniPlaceholders.getAudienceGlobalPlaceholders(this))
+            builder.resolver(MiniPlaceholders.audienceGlobalPlaceholders())
         }
         if (this is ConsoleCommandSource) {
             logger.info(message.asMiniMessage(builder.build()))
@@ -61,7 +61,7 @@ fun CommandSource.sendMini(message: String, logger: ComponentLogger, vararg reso
 fun CommandSource.sendMini(message: String, logger: ComponentLogger) {
     if (message.isNotBlank()) {
         val resolver =
-            if (hasMiniPlaceholders) MiniPlaceholders.getAudienceGlobalPlaceholders(this)
+            if (hasMiniPlaceholders) MiniPlaceholders.audienceGlobalPlaceholders()
             else TagResolver.empty()
         if (this is ConsoleCommandSource) {
             logger.info(message.asMiniMessage(resolver))

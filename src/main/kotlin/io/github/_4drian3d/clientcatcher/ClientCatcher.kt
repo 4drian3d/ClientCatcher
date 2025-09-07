@@ -34,7 +34,7 @@ import java.util.concurrent.CompletableFuture
     ]
 )
 class ClientCatcher @Inject constructor(
-    @DataDirectory private val path: Path,
+    @param:DataDirectory private val path: Path,
     private val pluginManager: PluginManager,
     private val metrics: Metrics.Factory,
     val proxyServer: ProxyServer,
