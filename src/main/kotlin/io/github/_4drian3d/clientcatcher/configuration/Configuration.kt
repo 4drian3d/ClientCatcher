@@ -133,7 +133,7 @@ class Configuration {
             var enabled = false
             var content = "Content"
             var username = "ClientCatcher"
-            var avatarURL = "https://cdn.modrinth.com/data/Dhqd1a7j/0a4240c54efdcabcd18e7ff47aaffdb79a7c92fd.png"
+            var avatarURL = "https://cdn.modrinth.com/data/Dhqd1a7j/ac20497103cb4b3cce6bf85e553bca4e4e7a2209.webp"
             var embed = Embed()
 
             @ConfigSerializable
@@ -146,7 +146,6 @@ class Configuration {
 
                 @ConfigSerializable
                 class Field {
-                    var inline = false
                     var name = "Name"
                     var value = "<player>"
                 }

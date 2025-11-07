@@ -16,7 +16,7 @@ import io.github._4drian3d.clientcatcher.configuration.Messages
 import io.github._4drian3d.clientcatcher.configuration.load
 import io.github._4drian3d.clientcatcher.listener.BrandListener
 import io.github._4drian3d.clientcatcher.listener.ModListener
-import io.github._4drian3d.jdwebhooks.WebHookClient
+import io.github._4drian3d.jdwebhooks.webhook.WebHookClient
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger
 import org.bstats.velocity.Metrics
 import java.nio.file.Path
@@ -64,7 +64,7 @@ class ClientCatcher @Inject constructor(
         }
     }
 
-    fun loadConfig() = CompletableFuture.supplyAsync {
+    fun loadConfig(): CompletableFuture<Boolean> = CompletableFuture.supplyAsync {
         configuration = load(path)
         messages = load(path)
         if ((configuration.webHook.client.enabled || configuration.webHook.mods.enabled) && webHookClient == null) {

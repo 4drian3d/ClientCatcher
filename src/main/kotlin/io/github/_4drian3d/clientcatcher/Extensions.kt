@@ -5,8 +5,9 @@ import com.velocitypowered.api.proxy.ConsoleCommandSource
 import com.velocitypowered.api.proxy.ProxyServer
 import io.github._4drian3d.clientcatcher.configuration.Configuration
 import io.github._4drian3d.clientcatcher.webhook.Replacer
-import io.github._4drian3d.jdwebhooks.Embed
-import io.github._4drian3d.jdwebhooks.WebHook
+import io.github._4drian3d.jdwebhooks.component.Component
+import io.github._4drian3d.jdwebhooks.component.SeparatorComponent.Spacing
+import io.github._4drian3d.jdwebhooks.webhook.WebHookExecution
 import io.github.miniplaceholders.api.MiniPlaceholders
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger
 import net.kyori.adventure.text.minimessage.MiniMessage
@@ -75,21 +76,26 @@ fun sendWebHook(plugin: ClientCatcher, replacer: Replacer, config: Configuration
     val client = plugin.webHookClient
     if (client != null && config.enabled) {
         CompletableFuture.supplyAsync {
-            val builder = WebHook.builder()
-                .content(replacer.replace(config.content))
+            val builder = WebHookExecution.builder()
                 .username(replacer.replace(config.username))
                 .avatarURL(config.avatarURL)
             val embedConfig = config.embed
-            builder.embed(
-                Embed.builder()
-                    .fields(embedConfig.fields.map {
-                        Embed.Field(it.inline, replacer.replace(it.name), replacer.replace(it.value))
-                    })
-                    .title(replacer.replace(embedConfig.title))
-                    .description(replacer.replace(embedConfig.description))
-                    .build()
-            )
-            builder.build()
-        }.thenCompose { client.sendWebHook(it) }
+            builder.component(Component.textDisplay(replacer.replace(config.content)))
+            val containerBuilder = Component.container()
+                .components(
+                    Component.textDisplay("## " + replacer.replace(embedConfig.title)),
+                    Component.textDisplay(replacer.replace(embedConfig.description))
+                )
+                .component(Component.separator().divider(true).spacing(Spacing.SMALL).build())
+            embedConfig.fields.map {
+                containerBuilder
+                    .component(
+                        Component.textDisplay("### " + replacer.replace(it.name))
+                    )
+                    .component(Component.textDisplay(replacer.replace(it.value)))
+            }
+
+            builder.components(containerBuilder.build()).build()
+        }.thenCompose { client.executeWebHook(it) }
     }
 }

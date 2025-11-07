@@ -22,7 +22,7 @@ bstats = { module = "org.bstats:bstats-velocity", version.ref = "bstats" }
 configurate-kotlin = { module = "org.spongepowered:configurate-extra-kotlin", version.ref = "configurate" }
 miniplaceholders-api = { group = "io.github.miniplaceholders", name = "miniplaceholders-api", version.ref = "miniplaceholders" }
 miniplaceholders-kotlin = { group = "io.github.miniplaceholders", name = "miniplaceholders-kotlin-ext", version.ref = "miniplaceholders" }
-jdwebhooks = { group = "io.github.4drian3d", name = "jdwebhooks", version = "1.1.0" }
+jdwebhooks = { group = "io.github.4drian3d", name = "jdwebhooks", version = "2.0.0" }
 
 [plugins]
 
