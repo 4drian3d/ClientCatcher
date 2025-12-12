@@ -24,7 +24,7 @@ jobs:
         max_attempts: 2
         command: gradle build
     - name: Upload build artifact
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: ClientCatcher
         path: build/libs/ClientCatcher-*.jar
